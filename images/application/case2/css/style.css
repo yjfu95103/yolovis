@@ -1,0 +1,62 @@
+p.content_outline {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+}
+
+p.train_description_title {
+	width: 30%;
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 17px;
+    border-left: 5px solid #ff8c00;
+	background-color:#ddd;
+}
+
+p.train_description {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+}
+
+p.train_description_code {
+	color: #FFFFFF;
+	background-color: #000000;
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 14px;
+}
+
+div.medium_content {
+	width: 70%;
+	margin:0px auto;
+}
+
+.specific_title{
+	color: transparent;
+	-webkit-text-stroke: 1px black;
+	letter-spacing: 0.04em;
+}
+
+li {
+    margin: 0 0 20px;
+    font-size: 16px;
+}
+
+.body {
+    font-family:sans-serif;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  display: inline-block;
+  padding-right: 0.5rem;
+  color: #aaa;
+  content: "/";
+}
+
+img.img-auto_adjust {
+	max-width:100px;
+	myimg:expression(onload=function(){ this.style.width=(this.offsetWidth > 100)?100px:auto});
+	display: inline;
+	vertical-align:middle;
+}

@@ -1,0 +1,211 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>船舶辨識</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.lp.css">
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	<link rel="stylesheet" type="text/css" href="./css/landing-page.css">
+	<!--<link rel="stylesheet" type="text/css" href="./css/reset.css">-->
+    <link href='http://fonts.googleapis.com/earlyaccess/cwtexfangsong.css' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans:r%7CKarla:r,i,b,bi&amp;subset=latin,latin-ext,latin,latin-ext" media="all">
+    <style type="text/css">
+    h1 {
+        font-family: 'cwTeXFangSong';
+    }
+    </style>
+</head>
+
+<body style="font-family: Karla,sans-serif;">
+    <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
+        <div class="container topnav">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand topnav" href="http://www.cc.ntut.edu.tw/~tjhsieh/">國立臺北科技大學資訊工程系計算機圖學實驗室</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#top">回頂端</a>
+                    </li>
+					
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+    <!-- Header -->
+    <a name="top"></a>
+    <div class="intro-header">
+        <div class="container" style="height:430px;">
+
+            <div class="row">
+				<!-- 背景圖 -->
+                <div class="col-lg-12" style="background-image:url('./image/Blue-planet-satellite-space-station_3840x2160.jpg'); background-size: 1145px 480px; background-position:center bottom; background-repeat:no-repeat; height:480px;" background="">
+                    <div class="intro-message" style="padding-top:3%;">
+                        <h1 stroke="#00FF00" stroke-width="2px">個案研究 - 船舶辨識</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	<!-- Abstract -->
+	<!-- section spacer -->
+	<div class="content-section-a">
+        <div class="container">
+            <hr class="section-heading-spacer">
+            <div class="row">
+                <div>
+					<!-- large title -->
+					<h2 class="section-heading">資料來源</h2>
+					<p>目前 SAR 船隻影像資料集資源非常稀少,來源為歐洲太空總署(ESA)Sentinel-1 衛星所提供的免費公開影像。 Sentinel-1 衛星運行 C 波段合成孔徑雷達,具有廣泛的覆蓋能力,並以中高解析度提供連續的全天候圖像。</p><p>本研究提出的 SOSD(Ship and Oil Spill Dataset)其衛星影像來源為 Sentinel-1 和 TerraSAR-X 衛星,拍攝目標區域通常為港口、運河和海洋,共有 53 張分佈大量船隻 的衛星影像,解析度在 1 公尺到 5 公尺之間,則影像大小在 1,000 × 1,000 到 15,000 × 15,000 之間,圖 3.1 為解析度 4,763×4,653 的 Sentinel-1 遙測影像。</p><p>本計畫的衛星影像來源為 Sentinel-1 和 TerraSAR-X 衛星。</p><ul>
+						<li>
+						<p>Sentinel-1:<br>
+						<a href="https://www.asf.alaska.edu/sentinel/" target="_blank" rel="noopener"><img src="image/Sentinel-1.jpg" alt="Sentinel-1" width="600" height="450"></a></p>
+						</li>
+						<li>
+						<p>TerraSAR-X:<br>
+						<a href="https://spacedata.copernicus.eu/web/cscda/missions/terrasar-x" target="_blank" rel="noopener"><img src="image/TerraSAR-X.jpg" alt="TerraSAR-X" width="600" height="450"></a></p>
+						</li>
+
+    <div class="content-section-a">
+        <div class="container">
+			<hr class="section-heading-spacer">
+            <div class="row">
+                <div>
+					<!-- large title -->
+                    <h2 class="section-heading">資料預處理</h2>
+					<p>在 SAR 遙測影 19像解析度過大之下,顯然不適合進行 CNN 的推論(Inference),此時將高解析度影像 切片成大小 544×544 的子影像,再由人工挑選出包含船隻的子影像,總共有 900 張, 隨機挑選資料集依照 7:2:1 的比例分成訓練集(Training Set) 630 張、驗證集(ValidationSet) 180 張和測試集(Test Set) 90 張作為卷積神經網路(Convolutional Neural Network , CNN)的訓練、驗證和測試數據。原始資料為tif檔，容量龐大，共有六張，以下為轉換成jpg格式的原始資料。</p>
+					<li>
+						<p>原始資料:<br>
+						<a target="_blank" rel="noopener"><img src="image/orig.jpg" alt="RSR" ></a></p>
+					</li>
+					<li>
+						<p>處理過後資料:<br>
+						<a target="_blank" rel="noopener"><img src="image/000002.jpg" alt="RSR" ></a></p>
+						<a target="_blank" rel="noopener"><img src="image/000004.jpg" alt="RSR" ></a></p>
+						<a target="_blank" rel="noopener"><img src="image/000005.jpg" alt="RSR" ></a></p>
+					</li>
+				</div>
+            </div>
+		</div>
+	</div>
+
+    <div class="content-section-a">
+        <div class="container">
+			<hr class="section-heading-spacer">
+            <div class="row">
+                <div>
+					<!-- large title -->
+                    <h2 class="section-heading">訓練集標記</h2>
+					<p>在使用深度學習來實作影像的物件偵測時,都會需要有大量的已知資料集,也就 是照片加上物件的所在位置以及物件的名稱,而通常若要準備這類的資料,初期都會 使用人工的方式來手動標註(Annotation)。在計畫中預計採用在 GitHub 上面 <a href="https://github.com/tzutalin/labelImg" target="_blank" rel="noopener">tzutalin 的 LabelImg 開源專案</a>,它是目前最多人使用標註工具。 在船隻偵測任務中,必須先手動對每張圖片的船隻真實的邊界框和標籤進行標 註。對此 PASCAL VOC 已經為物件偵測提供標準化的標註數據集範例,透過 LabelImg 的圖形介面標註邊界框(Bounding-Box)和標籤(Label),LabelImg 會直接將標註訊 息轉化成為 XML 文件,即可以符合 PASCAL VOC 以及 ImageNet 所規範的 XML 格 式。標註船隻的示意圖如下圖所示,如此可以將標註樣本直接輸入到 CNN 進行訓 練,實現 End-to-End 的訓練。              
+						<li>
+							<p>船隻標記:<br>
+							<a><img src="./image/mark.jpg" alt="船隻標記" width="600" height="450"></a></p>
+						</li>
+						經手工切割為900張照片並且一一標記，花費六小時。
+					</div>
+            </div>
+		</div>
+	</div>
+
+	<div class="content-section-a">
+        <div class="container">
+			<hr class="section-heading-spacer">
+            <div class="row">
+                <div>
+					<!-- large title -->
+                    <h2 class="section-heading">下載原始碼</h2>
+					<p>我們使用的是<a href="https://pjreddie.com/darknet/" target="_blank" rel="noopener">yoloy原作者Joseph Chet Redmon</a>所fork出來的版本:</p><p><a href="https://github.com/AlexeyAB/darknet" target="_blank" rel="noopener">https://github.com/AlexeyAB/darknet</a>
+						<p class="train_description_title">下載</p>
+						<div class="medium_content">
+							<p class="train_description_code">
+								git clone https://github.com/AlexeyAB/darknet.git
+							</p>
+						</div>
+				</div>
+            </div>
+		</div>
+	</div>
+
+	<div class="content-section-a">
+        <div class="container">
+			<hr class="section-heading-spacer">
+            <div class="row">
+                <div>
+					<!-- large title -->
+					<h2 class="section-heading">設定與編譯</h2>
+					<p class="train_description_title">執行指令</p>
+					<div class="medium_content">
+						<p class="train_description_code">
+							./darknet detector map 'data檔' 'config檔' 'weights檔'
+						</p>
+					</div>
+
+					<ul>
+							<li>data檔<br>
+							設定config檔及權重的地方</li>
+							    <p class="train_description_code">
+									classes= 1 // 種類為1，只要辨識船隻</p>
+								<p class="train_description_code">
+									train = /home/jyx/Desktop/SSDD/train.txt // 訓練集路徑
+								<p class="train_description_code">
+									valid = /home/jyx/Desktop/SSDD/test.txt // 驗證集路徑
+								<p class="train_description_code">
+									names = ship/ship.names // 種類名稱: ship</p>
+
+							<li>config檔<br>
+							設定yolo網路</li>
+							<li>weights檔<br>
+							yolo網路的權重</li>
+						</ul>
+				</div>
+
+				<p class="train_description_title">執行</p>
+				使用第11400次迭代的權重
+				<div class="medium_content">
+					<p class="train_description_code">
+						./darknet detector map ship/ship_SSDD_544.data ship/yolov2.cfg ship/yolov2_11400.weights
+					</p>
+				</div>
+				<li>
+					<p>結果示意圖:<br>
+					<a><img src="./image/output_1.jpg" alt="結果示意圖"></a></p>
+					<a><img src="./image/output_2.jpg" alt="結果示意圖"></a></p>
+					<a><img src="./image/output_3.jpg" alt="結果示意圖"></a></p>
+				</li>
+				YOLOV2權重經過訓練準確度可達九成。
+            </div>
+		</div>
+	</div>
+
+    <footer>
+        <div class="container">
+            <hr class="section-heading-spacer">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p class="copyright text-muted small"><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="創用 CC 授權條款" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type"></span><br>
+			互動式向量圖形編輯，由<a xmlns:cc="http://creativecommons.org/ns#" href="http://www.cc.ntut.edu.tw/~tjhsieh/" property="cc:attributionName" rel="cc:attributionURL">國立臺北科技大學資訊工程系計算機圖學實驗室</a>製作，
+			以<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">創用CC 姓名標示-非商業性-相同方式分享 4.0 國際 授權條款</a>釋出。
+			姓名標示-非商業性-相同方式分享 CC BY-NC-SA
+			本授權條款允許使用者對本著作進行重混、調整，以及依原著作建立新著作，但僅限於非商業目的之使用。唯使用者就其新創著作，必須按照表彰
+			原作：國立臺北科技大學資訊工程系計算機圖學實驗室，並且將產出之新創著作採用相同的授權條款釋出。</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+<script src="lib/jquery-2.1.3.min.js"></script>
+<script src="lib/bootstrap.min.js"></script>
+</html>

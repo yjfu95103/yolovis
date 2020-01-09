@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>histogram</title>
+	<script src="./Chart.bundle.js"></script>
+	<script src="./utils.js"></script>
+	<style>
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="container" style="width: 90%;">
+		<canvas id="canvas"></canvas>
+	</div>
+
+	<script>
+
+		// https://stackoverflow.com/questions/42556835/show-values-on-top-of-bars-in-chart-js/46803027
+		Chart.plugins.register({
+		  afterDraw: function(chartInstance) {
+		    if (chartInstance.config.options.showDatapoints) {
+		      var helpers = Chart.helpers;
+		      var ctx = chartInstance.chart.ctx;
+		      var fontColor = helpers.getValueOrDefault(chartInstance.config.options.showDatapoints.fontColor, chartInstance.config.options.defaultFontColor);
+
+		      // render the value of the chart above the bar
+		      ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+		      ctx.textAlign = 'center';
+		      ctx.textBaseline = 'bottom';
+		      ctx.fillStyle = fontColor;
+
+		      chartInstance.data.datasets.forEach(function (dataset) {
+		        for (var i = 0; i < dataset.data.length; i++) {
+		          var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+		          var scaleMax = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._yScale.maxHeight;
+		          var yPos = (scaleMax - model.y) / scaleMax >= 0.93 ? model.y + 20 : model.y - 5;
+		          ctx.fillText(dataset.data[i], model.x, yPos);
+		        }
+		      });
+		    }
+		  }
+		});
+
+		var MONTHS = ['R-CNN', 'Fast R-CNN', 'Faster R-CNN', 'YOLOv1', 'YOLOv2'];
+
+		var color = Chart.helpers.color;
+
+		var barChartData = {
+			labels: ['R-CNN', 'Fast R-CNN', 'Faster R-CNN', 'YOLOv1', 'YOLOv2'],
+			datasets: [
+			{
+				label: '', /* 演算法速度 */
+				backgroundColor: color(window.chartColors.purple).alpha(0.5).rgbString(),
+				borderColor: window.chartColors.purple,
+				borderWidth: 1,
+				data: [0.05, 0.5, 7, 45, 40]
+			}
+			]
+		};
+
+		window.onload = function() {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			
+			window.myBar = new Chart(ctx, {
+				type: 'bar',
+				data: barChartData,
+				options: {
+					showDatapoints: true,
+					responsive: true,
+					legend: {
+						fontSize: 36,
+						position: 'top',
+					},
+					title: {
+						fontSize: 36,
+						display: true,
+						text: '物件偵測 - 速度'
+					},
+					/* https://stackoverflow.com/questions/28990708/chartjs-how-to-set-max-and-min-value-for-y-axis */
+		            scales: {
+						xAxes: [{
+							fontSize: 24,
+							display: true,
+		                    ticks: {
+								fontSize: 24,
+		                    },
+							scaleLabel: {
+								fontSize: 24,
+								display: true,
+								labelString: '深度學習物件偵測方法'
+							}
+						}],
+		                yAxes: [{
+		                    ticks: {
+								fontSize: 24,
+		                        min: 0,
+		                        max: 50,
+		                        beginAtZero: true
+		                    },
+							scaleLabel: {
+								fontSize: 24,
+								display: true,
+								labelString: 'FPS 每秒幀幅數'
+							}
+		                }]
+		            }
+				}
+			});
+		};
+
+	</script>
+</body>
+
+</html>

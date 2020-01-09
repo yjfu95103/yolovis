@@ -1,0 +1,1966 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+
+	<title>YOLO 物件偵測</title>
+
+	<meta name="description" content="Reveal.js-TOC-Progress - LaTeX Beamer-like progress indicator according to table of contents for Reveal.js HTML presentations">
+	<meta name="author" content="Igor Leturia">
+
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="css/reveal.min.css">
+	<link rel="stylesheet" href="css/theme/beige.css" id="theme">
+
+	<!-- For syntax highlighting -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- TOC-Progress plugin -->
+	<link rel="stylesheet" href="plugin/toc-progress/toc-progress.css">
+
+	<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+	<script>
+		if( window.location.search.match( /print-pdf/gi ) ) {
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = 'css/print/pdf.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		}
+	</script>
+
+	<!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+
+	<div class="reveal">
+
+	<div class="slides">
+
+	<section>
+		<section data-state="no-toc-progress">
+			<h5 class="no-toc-progress">人工智慧技術及應用人才培育計畫 - 人工智慧技術視覺化展示系統</h5>
+			<!-- <h2>YOLO</h2> -->
+			<p class="reveal fragment grow" style="font-size: 100px; text-shadow: 0 1px 0 #cccccc, 0 2px 0 #c9c9c9,
+			 0 3px 0 #bbbbbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaaaaa, 0 6px 1px rgba(0, 0, 0, 0.1),
+			  0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2),
+			   0 5px 10px rgba(0, 0, 0, 0.25), 0 20px 20px rgba(0, 0, 0, 0.15);">YOLO</p>
+			<p class="reveal fragment grow" style="font-size: 100px; text-shadow: 0 1px 0 #cccccc, 0 2px 0 #c9c9c9,
+		0 3px 0 #bbbbbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaaaaa, 0 6px 1px rgba(0, 0, 0, 0.1),
+		 0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2),
+		  0 5px 10px rgba(0, 0, 0, 0.25), 0 20px 20px rgba(0, 0, 0, 0.15);">You Only Look Once</p>
+		  <p class="reveal fragment grow" style="font-size: 100px; text-shadow: 0 1px 0 #cccccc, 0 2px 0 #c9c9c9,
+		  0 3px 0 #bbbbbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaaaaa, 0 6px 1px rgba(0, 0, 0, 0.1),
+		   0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2),
+			0 5px 10px rgba(0, 0, 0, 0.25), 0 20px 20px rgba(0, 0, 0, 0.15);">深度學習 物件偵測</p>
+			<!-- <h2 class="reveal fragment grow">You Only Look Once</h2> -->
+			<!-- <h2 class="reveal fragment grow">深度學習 物件偵測<h2> -->
+		</section>
+	</section>
+
+	<section>
+		<section>
+			<h3>&ensp;簡介&ensp;</h3>
+		</section>
+		<!-- Template -->
+		<!-- <section>
+			<h3>◯標題1-0 Description</h3>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">今天的主角是 YOLO，YOLO 跑得很快!</p><br>
+				<p class="fragment" style="font-size:75%;">今天的主角是 YOLO，YOLO 跑得很快!</p><br>
+				<p class="fragment" style="font-size:75%;">今天的主角是 YOLO，YOLO 跑得很快!</p>
+			</div>
+			<div class="div-2-right">因為 YOLO 只允許你瞧一眼!
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<h3>◯標題1-1 Description</h3>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:80%;">今天的主角是 YOLO，YOLO 跑得很快!</p><br>
+				<p class="fragment" style="font-size:75%;">今天的主角是 YOLO，YOLO 跑得很快!</p><br>
+				<p class="fragment" style="font-size:75%;">今天的主角是 YOLO，YOLO 跑得很快!</p>
+			</div>
+			<div class="div-1-right">因為 YOLO 只允許你瞧一眼!
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section> -->
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:80%;">大家好，我是左左同學。</p>
+				<br>
+			</div>
+			<div class="div-1-right">
+				<br>
+				<p style="font-size:80%;">大家好，我是右右老師。</p>
+				<p class="fragment" style="font-size:75%;">今天介紹 YOLO 深度學習物件偵測技術!</p>
+				<br>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:80%;">今天的主角是 YOLO，它是一種物件偵測方法。</p>
+				<br>
+			</div>
+			<div class="div-1-right">
+				<br>
+				<p class="fragment" style="font-size:75%;">特色是速度很快</p>
+				<br>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:80%;">什麼是 OBJECT DETECTION 物件偵測?</p>
+				<br>
+			</div>
+			<div class="div-1-right">
+				<br>
+				<p style="font-size:80%;">讓電腦使用深度學習技術，分析影片。 </p>
+				<p class="fragment" style="font-size:75%;">找出物件位置，辨識物件。 </p>
+				<p class="fragment" style="font-size:75%;">下一頁，我們來看物件偵測範例。 </p>
+				<br>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:80%;">請按影片左下方，撥放紐</p>
+			</div>
+			<div>
+				<video style="position:absolute; top:25%; left:18%; border:0px; width:70%" loop="false" muted="true" controls>
+					<source src="video/yolo.mp4" type="video/mp4">	
+				</video>
+			</div>
+			<br><br><br><br><br><br><br>
+			<div class="div-1-right">
+				<p class="fragment" style="font-size:75%;"><p style="font-size:80%;">辨識出物件,加上框框標記物件位置。</p></p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">所以說，物件偵測就是在找出畫面中物件及其位置囉?</p>				
+			</div>
+			<br><br>
+			<img style="position: absolute;	bottom: 30%; left: 10%;" height="35%" src="images/YOLO/input.jpg">
+			<p class="fragment"><img style="position: absolute;	bottom: 30%; left: 50%;" height="35%" src="images/YOLO/predictions.jpg"></p>
+			<div class="div-2-right">
+				<p class="fragment" style="font-size:75%;">YOU ARE RIGHT! </p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:80%;">我明白物件辨識在幹嘛了!</p>		
+				<br>		
+			</div>
+			<br>
+			<div class="div-1-right">
+				<br>
+				<p class="fragment" style="font-size:75%;">不錯!</p>
+				<br>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+		
+	</section>	
+<!-- -->
+	<section>
+		<section>
+			<h3>&ensp;歷史演進&ensp;</h3>
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-1-left">
+					<br>
+					<p style="font-size:80%;">今天來看看有哪些物體辨識框架</p>
+					<br>
+				</div>
+				<div class="div-1-right">
+					<br>
+					<p style="font-size:80%;">物體辨識框架有很多種</p>
+					<br>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<!-- time -->
+		<section>
+			<p style="font-size:80%;">物件辨識演進年代表</p>
+			<svg width="1000" height="100">
+				<text x="10" y="100" font-family="sans-serif" font-size="15px" fill="black">NN(1943)</text>
+				<text x="450" y="100" font-family="sans-serif" font-size="15px" fill="black">CNN(1980)</text>
+				<text x="820" y="100" font-family="sans-serif" font-size="15px" fill="black">R-CNN(2014)</text>
+				<text x="830" y="80" font-family="sans-serif" font-size="15px" fill="black">Fast R-CNN(2015)</text>
+				<text x="840" y="60" font-family="sans-serif" font-size="15px" fill="black">Faster R-CNN(2016)</text>
+				<text x="840" y="40" font-family="sans-serif" font-size="15px" fill="black">YOLOv1(2016)</text>
+				<text x="850" y="20" font-family="sans-serif" font-size="15px" fill="black">YOLOv2(2017)</text>
+			</svg>
+        <iframe src="time.html" width="200%" scrolling="No" frameborder="100"></iframe>
+		</section>
+		<!-- time -->
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-2-left">
+					<p style="font-size:80%;">早在1943年類神經網路的演算法便已提出</p>
+				</div>
+				<!-- 圖片 -->
+				  <img style="position: absolute; top: 30%; left: 15%;" width="7%" class="plain" src="./images/history/1.png">
+				  <img style="position: absolute; top: 30%; left: 25%;" width="7%" class="plain" src="./images/history/2.png">
+				  <img style="position: absolute; top: 30%; left: 35%;" width="7%" class="plain" src="./images/history/3.png">
+				  <img style="position: absolute; top: 40%; left: 15%;" width="7%" class="plain" src="./images/history/4.png">
+				  <img style="position: absolute; top: 40%; left: 25%;" width="7%" class="plain" src="./images/history/5.png">
+				  <img style="position: absolute; top: 40%; left: 35%;" width="7%" class="plain" src="./images/history/6.png">
+				  <img style="position: absolute; top: 50%; left: 15%;" width="7%" class="plain" src="./images/history/7.png">
+				  <img style="position: absolute; top: 50%; left: 25%;" width="7%" class="plain" src="./images/history/8.png">
+				  <img style="position: absolute; top: 50%; left: 35%;" width="7%" class="plain" src="./images/history/9.png">	
+				  <img style="position: absolute; top: 30%; left: 50%;" width="18%" class="plain" src="./images/history/fcn.jpg">
+
+				  <img style="position: absolute; top: 30%; left: 75%;" width="7%" class="plain" src="./images/history/1.png">
+				  <img style="position: absolute; top: 30%; left: 85%;" width="7%" class="plain" src="./images/history/2.png">
+				  <img style="position: absolute; top: 30%; left: 95%;" width="7%" class="plain" src="./images/history/3.png">
+				  <img style="position: absolute; top: 40%; left: 75%;" width="7%" class="plain" src="./images/history/4.png">
+				  <img style="position: absolute; top: 40%; left: 85%;" width="7%" class="plain" src="./images/history/5.png">
+				  <img style="position: absolute; top: 40%; left: 95%;" width="7%" class="plain" src="./images/history/6.png">
+				  <img style="position: absolute; top: 50%; left: 75%;" width="7%" class="plain" src="./images/history/7.png">
+				  <img style="position: absolute; top: 50%; left: 85%;" width="7%" class="plain" src="./images/history/8.png">
+				  <img style="position: absolute; top: 50%; left: 95%;" width="7%" class="plain" src="./images/history/9.png">
+				<!-- <iframe src="nn.html" width="2000" height="200" scrolling="No" frameborder="100"></iframe> -->
+				<!-- 圖片 -->
+				<div class="div-2-right"><p style="font-size:80%;">NN是現在許多影像辨識框架的老祖宗</p>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">每一個輸入的點是圖片的pixel，輸出則是物體種類</p>
+			</div>
+			<!-- 圖片 -->
+			<img style="position: absolute; top: 30%; left: 15%;" width="7%" class="plain" src="./images/history/1.png">
+			<img style="position: absolute; top: 30%; left: 25%;" width="7%" class="plain" src="./images/history/2.png">
+			<img style="position: absolute; top: 30%; left: 35%;" width="7%" class="plain" src="./images/history/3.png">
+			<img style="position: absolute; top: 40%; left: 15%;" width="7%" class="plain" src="./images/history/4.png">
+			<img style="position: absolute; top: 40%; left: 25%;" width="7%" class="plain" src="./images/history/5.png">
+			<img style="position: absolute; top: 40%; left: 35%;" width="7%" class="plain" src="./images/history/6.png">
+			<img style="position: absolute; top: 50%; left: 15%;" width="7%" class="plain" src="./images/history/7.png">
+			<img style="position: absolute; top: 50%; left: 25%;" width="7%" class="plain" src="./images/history/8.png">
+			<img style="position: absolute; top: 50%; left: 35%;" width="7%" class="plain" src="./images/history/9.png">	
+			<img style="position: absolute; top: 30%; left: 50%;" width="18%" class="plain" src="./images/history/fcn.jpg">
+
+			<img style="position: absolute; top: 30%; left: 75%;" width="7%" class="plain" src="./images/history/1.png">
+			<img style="position: absolute; top: 30%; left: 85%;" width="7%" class="plain" src="./images/history/2.png">
+			<img style="position: absolute; top: 30%; left: 95%;" width="7%" class="plain" src="./images/history/3.png">
+			<img style="position: absolute; top: 40%; left: 75%;" width="7%" class="plain" src="./images/history/4.png">
+			<img style="position: absolute; top: 40%; left: 85%;" width="7%" class="plain" src="./images/history/5.png">
+			<img style="position: absolute; top: 40%; left: 95%;" width="7%" class="plain" src="./images/history/6.png">
+			<img style="position: absolute; top: 50%; left: 75%;" width="7%" class="plain" src="./images/history/7.png">
+			<img style="position: absolute; top: 50%; left: 85%;" width="7%" class="plain" src="./images/history/8.png">
+			<img style="position: absolute; top: 50%; left: 95%;" width="7%" class="plain" src="./images/history/9.png">
+				  
+			<!-- <iframe src="nn.html" width="2000" height="200" scrolling="No" frameborder="100"></iframe>		 -->
+			<!-- 圖片 -->
+			<div class="div-2-right"><p style="font-size:80%;">但因為將圖片變得平坦，而導致空間信息丟失了</p>
+			</div>
+		    <img class="img-right plain" src="images/girl.svg">
+		</section>
+		
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:80%;">沒錯，而且無法保留物體特徵</p>
+				<br>
+			</div>
+			<!-- 圖片 -->
+			<!-- 圖片 -->
+			<div class="div-1-right">
+				<br>
+				<p style="font-size:80%;">那該怎麼辦呢</p>
+				<br>
+			</div>
+		    <img class="img-right plain" src="images/girl.svg">
+	    </section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-2-left">
+					<p style="font-size:80%;">就是CNN上場的時候了</p>
+				</div>
+				<!-- 圖片 -->
+				<img style="position: absolute; top: 30%; left: 15%;" width="30%" class="plain" src="./images/history/sliding_window.png">
+				<img style="position: absolute; top: 30%; left: 45%;" width="30%" class="plain" src="./images/history/cnn.png">
+				<img style="position: absolute; top: 30%; left: 75%;" width="30%" class="plain" src="./images/history/sliding_window_result.png">
+				<br><br>
+				<!-- <iframe src="cnn.html" width="2000" height="200" scrolling="No" frameborder="100"></iframe>		 -->
+				<!-- 圖片 -->
+				<div class="div-2-right">
+					<p style="font-size:80%;">比NN多一個C，是什麼意思呢?</p>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-1-left">
+					<br>
+					<p style="font-size:80%;">CNN的C是卷積的意思</p>
+					<br>
+				</div>
+				<!-- 圖片 -->				
+				<!-- 圖片 -->
+				<div class="div-1-right">
+					<br>
+					<p style="font-size:80%;">所以是用卷積層取代部分全連接層囉!</p>
+					<br>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-1-left">
+					<br>
+					<p style="font-size:90%;">透過大小不一的Sliding Window去尋找物體</p>
+					<br>
+				</div>
+				<!-- 圖片 -->
+				
+				<!-- 圖片 -->
+				<div class="div-1-right">
+					<br>
+					<p style="font-size:90%;">之後將Sliding Window內的影像</p>
+					<p style="font-size:90%;">送入卷積層萃取特徵，</p>
+					<p style="font-size:90%;">最後再送入全連接層分類</p>
+					<br>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<!-- <section>
+			<table>
+			<td style="white-space: nowrap">
+				<table> 
+					<tr>
+						<td style="border:1px solid #aa0;padding:5px;"><img class="plain" src="./images/sliding_window.png"></img></td>
+						<td style="border:1px solid #aa0;padding:5px;"><img class="plain" src="./images/cnn.png"></img></td>
+						<td style="border:1px solid #aa0;padding:5px;"><img class="plain" src="./images/sliding_window_result.png"></img></td>
+					</tr>
+				</table>
+			</td>
+			</table>
+		</section> -->
+		
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-1-left">
+					<br>
+					<p style="font-size:90%;">不覺得每張圖片都要用</p>
+					<p style="font-size:90%;">Sliding Window去掃描很浪費時間呢?</p>
+					<br>
+				</div>
+				<!-- 圖片 -->
+				
+				<!-- 圖片 -->
+				<div class="div-1-right">
+					<br>
+					<p style="font-size:90%;">沒錯，而且Sliding Window</p>
+					<p style="font-size:90%;">還要剛好符合物體大小</p>
+					<br>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-2-left">
+					<p style="font-size:80%;">這時候就是R-CNN上場的時候了</p>
+				</div>
+				<!-- 圖片 -->
+				<img style="position: absolute; top: 30%; left: 15%;" width="30%" class="plain" src="./images/history/region_proposal.png">
+				<img style="position: absolute; top: 30%; left: 45%;" width="30%" class="plain" src="./images/history/rcnn.png">
+				<img style="position: absolute; top: 30%; left: 75%;" width="30%" class="plain" src="./images/history/sliding_window_result.png">
+				<!-- <iframe src="rcnn.html" width="2000" height="200" scrolling="No" frameborder="100"></iframe>	 -->
+				<!-- 圖片 -->
+				<br>
+				<div class="div-2-right">R-CNN候選區域的概念，加快了速度
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-1-left">
+					<br>
+					<p style="font-size:80%;">將候選區域丟入卷積層，萃取特徵</p>
+					<br>
+				</div>
+				<!-- 圖片 -->
+				
+				<!-- 圖片 -->
+				<div class="div-1-right">
+					<br>
+					<p style="font-size:80%;">再使用SVM向量機去判斷是物體還是背景</p>
+					<br>
+					
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-1-left">
+					<br>
+					<p style="font-size:80%;">最後使用線性回歸調整 bounding box 的位置</p>
+					<br>
+				</div>
+				<!-- 圖片 -->
+				
+				<!-- 圖片 -->
+				<div class="div-1-right">
+					<br>
+					<p style="font-size:80%;">這樣就可以把物體位置標出來了</p>
+					<br>
+					
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<!-- <section>
+			<table>
+			<td style="white-space: nowrap">
+				<table> 
+					<tr>
+						<td style="border:1px solid #aa0;padding:5px;"><img class="plain" src="./images/region_proposal.png"></img></td>
+						<td style="border:1px solid #aa0;padding:5px;"><img class="plain" src="./images/rcnn.png"></img></td>
+						<td style="border:1px solid #aa0;padding:5px;"><img class="plain" src="./images/sliding_window_result.png"></img></td>
+					</tr>
+				</table>
+			</td>
+			</table>
+		</section> -->
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-1-left">
+					<br>
+					<p style="font-size:80%;">但是每個區域的特徵好像不能共用耶</p>
+					<br>
+				</div>
+				<!-- 圖片 -->
+				
+				<!-- 圖片 -->
+				<div class="div-1-right">
+					<br>
+					<p style="font-size:80%;">對阿，照理說物體可能出現在任何地方</p>
+					<br>
+					
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-2-left">
+					<p style="font-size:80%;">所以說應該要讓每個候選區域共用彼此的特徵</p>
+				</div>
+				<!-- 圖片 -->
+				<img style="position: absolute; top: 30%; left: 15%;" width="30%" class="plain" src="./images/history/region_proposal.png">
+				<img style="position: absolute; top: 30%; left: 45%;" width="30%" class="plain" src="./images/history/fast_rcnn.png">
+				<img style="position: absolute; top: 30%; left: 75%;" width="30%" class="plain" src="./images/history/sliding_window_result.png">
+				<!-- <iframe src="fast_rcnn.html" width="2000" height="200" scrolling="No" frameborder="100"></iframe>	 -->
+				<!-- 圖片 -->
+				<br>
+				<div class="div-2-right">
+					<p style="font-size:80%;">使用Region of Interest Pooling，</p>
+					<p style="font-size:80%;">讓萃取出的特徵所有區域都能共用</p>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<!-- <section>
+			<table>
+				<td style="white-space: nowrap">
+				<table> 
+					<tr>
+						<td style="border:1px solid #aa0;padding:5px;"><img class="plain" src="./images/region_proposal.png"></img></td>
+						<td style="border:1px solid #aa0;padding:5px;"><img class="plain" src="./images/fast_rcnn.png"></img></td>
+						<td style="border:1px solid #aa0;padding:5px;"><img class="plain" src="./images/sliding_window_result.png"></img></td>
+					</tr>
+				</table>
+		    </table>
+		</section> -->
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-1-left">
+					<br>
+					<p style="font-size:80%;">不過要選候選區域，</p>
+					<p style="font-size:80%;">何不直接在feature map上選呢?</p>
+					<br>
+				</div>
+				<!-- 圖片 -->
+				
+				<!-- 圖片 -->
+				<div class="div-1-right">
+					<br>
+					<p style="font-size:80%;">對耶~</p>
+					<p style="font-size:80%;">feature map 尺寸更小，速度更快</p>
+					<br>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-1-left">
+					<br>
+					<p style="font-size:80%;">Faster R-CNN 提出了 </p>
+					<p style="font-size:80%;"><b>RPN</b> (Region Proposal Network) 的概念</p>
+					<br>
+				</div>
+				<!-- 圖片 -->
+				
+				<!-- 圖片 -->
+				<div class="div-1-right">
+					<br>
+					<p style="font-size:80%;">就是使用<b>anchor box</b> </p>
+					<p style="font-size:80%;">在 feature map 上做 sliding window</p>
+					<br>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-2-left">
+					<p style="font-size:80%;">再接上原本的Fast R-CNN</p>
+				</div>
+				<!-- 圖片 -->
+				<img style="position: absolute; top: 30%; left: 15%;" width="30%" class="plain" src="./images/history/region_proposal.png">
+				<img style="position: absolute; top: 30%; left: 45%;" width="30%" class="plain" src="./images/history/fast_rcnn.png">
+				<img style="position: absolute; top: 30%; left: 75%;" width="30%" class="plain" src="./images/history/sliding_window_result.png">
+				<!-- <iframe src="fast_rcnn.html" width="2000" height="200" scrolling="No" frameborder="100"></iframe>					 -->
+				<!-- 圖片 -->
+				<br>
+				<div class="div-2-right">
+					<p style="font-size:80%;">因為選擇候選區域變快了，加快了整體速度</p>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-2-left">
+					<p style="font-size:80%;">這時候有一個新的框架橫空出世</p>
+				</div>
+				<!-- 圖片 -->
+				<img style="position: absolute; top: 30%; left: 15%;" width="30%" class="plain" src="./images/history/yolov1_grid.png">
+				<img style="position: absolute; top: 30%; left: 45%;" width="30%" class="plain" src="./images/history/yolov1.png">
+				<img style="position: absolute; top: 30%; left: 75%;" width="30%" class="plain" src="./images/history/sliding_window_result.png">
+				<!-- <iframe src="YOLOv1.html" width="2000" height="200" scrolling="No" frameborder="100"></iframe>					 -->
+				<!-- 圖片 -->
+				<br>
+				<div class="div-2-right"><p style="font-size:80%;">沒錯，就是YOLO</p>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-1-left">
+					<br>
+					<p style="font-size:80%;">有別於R-CNN的物體分類和區域判定兩步驟，</p>
+					<p style="font-size:80%;">YOLO直接把兩者合成一步驟</p>
+					<br>
+				</div>
+				<!-- 圖片 -->
+				
+				<!-- 圖片 -->
+				<div class="div-1-right">
+					<br>
+					<p style="font-size:80%;">這就是YOLO比較快的秘訣</p>
+					<br>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-1-left">
+					<br>
+					<p style="font-size:80%;">YOLOv1 不使用候選區域，</p>
+					<p style="font-size:80%;">而是將圖片切成片切成7x7x7x7大小,</p>
+					<p style="font-size:80%;">每一格網格預測自己的 bounding box</p>
+					<br>
+				</div>
+				<!-- 圖片 -->
+
+				<!-- 圖片 -->
+				<div class="div-1-right">					
+					<br>
+					<p style="font-size:80%;">每一個 bounding box再送入卷積層萃取特徵，</p>
+					<p style="font-size:80%;">最後再送入全連接層做分類和確定 bounding box</p>
+					<br>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-2-left">
+					<p style="font-size:80%;">因為帶有 grid cell 的空間訊息，</p>
+					<p style="font-size:80%;">可以直接預測物體種類跟位置</p>
+				</div>
+				<!-- 圖片 -->
+				<img style="position: absolute; top: 30%; left: 15%;" width="30%" class="plain" src="./images/history/yolov1_grid.png">
+				<img style="position: absolute; top: 30%; left: 45%;" width="30%" class="plain" src="./images/history/yolov1.png">
+				<img style="position: absolute; top: 30%; left: 75%;" width="30%" class="plain" src="./images/history/sliding_window_result.png">
+				<!-- <iframe src="YOLOv1.html" width="2000" height="200" scrolling="No" frameborder="100"></iframe>					 -->
+				<!-- 圖片 -->
+				<br>
+				<div class="div-2-right">
+					<p style="font-size:80%;">這就是YOLO的一步到位</p>					
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<!-- <section>
+			<table>
+				<td style="white-space: nowrap">
+					<table> 
+						<tr>
+							<td style="border:1px solid #aa0;padding:5px;"><img class="plain" src="./images/yolov1_grid.png"></img></td>
+							<td style="border:1px solid #aa0;padding:5px;"><img class="plain" src="./images/yolov1.png"></img></td>
+							<td style="border:1px solid #aa0;padding:5px;"><img class="plain" src="./images/sliding_window_result.png"></img></td>
+						</tr>
+					</table>
+			</table>
+		</section> -->
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-1-left">
+					<br>
+					<p style="font-size:80%;">不過阿，YOLOv1 還是有缺點的</p>
+					<br>
+				</div>
+				<!-- 圖片 -->				
+				<!-- 圖片 -->
+				<div class="div-1-right">
+					<br>
+					<p style="font-size:80%;">該怎麼說呢</p>
+					<br>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-1-left">
+					<br>
+					<p style="font-size:80%;">由最後輸出的 tensor 得知，</p>
+					<p style="font-size:80%;">所有 bounding box 共用所有物體信心分數</p>
+					<br>
+				</div>
+				<!-- 圖片 -->				
+				<!-- 圖片 -->
+				<div class="div-1-right">
+					<br>
+					<p style="font-size:80%;">這樣會怎樣呢</p>
+					<br>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-1-left">
+					<br>
+					<p style="font-size:80%;">這樣會導致每個 grid 只會預測一個物體</p>
+					<br>
+				</div>
+				<!-- 圖片 -->				
+				<!-- 圖片 -->
+				<div class="div-1-right">
+					<br>
+					<p style="font-size:80%;">這樣兩物體中心很靠近時就預測不到了</p>
+					<br>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-2-left">
+					<p style="font-size:80%;">沒錯，所以 YOLOv2 借鑒了Faster R-CNN, </p>
+					<p style="font-size:80%;">從訓練集選出五個最合適的的 anchor box</p>
+				</div>
+				<!-- 圖片 -->
+				<img style="position: absolute; top: 30%; left: 15%;" width="30%" class="plain" src="./images/history/yolov2_anchor_box.png">
+				<img style="position: absolute; top: 30%; left: 50%;" width="15%" class="plain" src="./images/history/yolov2.png">
+				<img style="position: absolute; top: 30%; left: 75%;" width="30%" class="plain" src="./images/history/sliding_window_result.png">
+				<!-- <iframe src="YOLOv2.html" width="2000" height="200" scrolling="No" frameborder="100"></iframe>					 -->
+				<!-- 圖片 -->
+				<div class="div-2-right">
+					<p style="font-size:80%;">而且每個 anchor box 信心分數是獨立的</p>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-1-left">
+					<br>
+					<p style="font-size:80%;">沒錯，所以 YOLOv2 對於重疊的物體有更好的準確率</p>
+					<br>
+				</div>
+				<!-- 圖片 -->
+				
+				<!-- 圖片 -->
+				<div class="div-2-right">
+					<br>
+					<p style="font-size:80%;">但 YOLOv2 網路變深不會導致信息丟失嗎?</p>
+					<br>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-2-left">
+					<p style="font-size:80%;">對此，YOLOv2 借鑒 ResNet, </p>
+					<p style="font-size:80%;"></p>增加 rout layer, 將淺層特徵連接到深層</p>
+				</div>
+				<!-- 圖片 -->
+				<img style="position: absolute; top: 30%; left: 15%;" width="30%" class="plain" src="./images/history/yolov2_anchor_box.png">
+				<img style="position: absolute; top: 30%; left: 50%;" width="15%" class="plain" src="./images/history/yolov2.png">
+				<img style="position: absolute; top: 30%; left: 75%;" width="30%" class="plain" src="./images/history/sliding_window_result.png">
+				<!-- <iframe src="YOLOv2.html" width="2000" height="200" scrolling="No" frameborder="100"></iframe> -->
+				<!-- 圖片 -->
+				<br>
+				<div class="div-2-right">
+					<p style="font-size:80%;">這樣深層網路也能保有細節的特徵了</p>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<!-- <section>
+			<table> 
+				<td style="white-space: nowrap">
+					<table> 
+						<tr>
+							<td style="border:1px solid #aa0;padding:5px;"><img class="plain" src="./images/yolov2_anchor_box.png"></img></td>
+							<td style="border:1px solid #aa0;padding:5px;"><img class="plain" src="./images/yolov2.png"></img></td>
+							<td style="border:1px solid #aa0;padding:5px;"><img class="plain" src="./images/sliding_window_result.png"></img></td>
+						</tr>
+					</table>
+			</table>
+		</section> -->
+		    
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+				<div class="div-2-left">
+					<p style="font-size:80%;">比較圖</p>
+				</div>
+            <img style="position: absolute; top: 50%; left: 15%;" width="80%" class="plain" src="images/history/compare.png">
+		</section>
+	</section>
+
+	<!--技術介紹 /////////////////////////////////////////////////////////-->
+	<section>
+		<section>
+			<h2>&ensp;技術介紹&ensp;</h2>
+		</section>
+
+		<section>
+			<p style="font-size: 150%">類神經網路 NN</p>
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:80%;">什麼是類神經網路?</p>
+				<br>
+			</div><br>
+			<div class="div-1-right">
+				<br>
+				<p style="font-size:80%;">類神經網路(Neural Network，簡稱NN)</p>
+				<p style="font-size:80%;">，它就像人類大腦的思維去辨別物件，</p>
+				<p style="font-size:80%;">由物件的部分區塊去判斷是什麼種類，</p>
+				<p style="font-size:80%;">它是物件偵測的發展起源</p>
+				<br>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">以下的圖片，是一張數字9的圖像，</p>
+				<p style="font-size:80%;">它是怎麼進行處理的?</p>
+			</div>
+			<img style="position:absolute;top:30%;left:20%;width:28.5%;" src="images/NN/9.PNG">	
+			<img class="fragment" style="position:absolute;top:30%;left:60%;width:30%;" src="images/NN/28x28.PNG">
+			<!-- <br><br> -->
+			<div class="div-2-right">
+				<p class="fragment" style="font-size:75%;">它是一張28像素乘以28像素的圖片(784像素)，</p>
+				<p class="fragment" style="font-size:75%;">是以像素的方式輸入</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">接下來呢?</p>		
+			</div>
+			<img style="position:absolute;top:30%;left:20%;width:28.5%;" src="images/NN/9-1.PNG">
+			<img class="fragment" style="position:absolute;top:50%;left:60%;width:35%;" src="images/NN/784-1.PNG">
+			<br>
+			<div class="div-2-right">
+				<p class="fragment" style="font-size:75%;">然後把這些像素重新排成一列</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">接下來呢?</p>
+			</div>
+			<img style="position:absolute;top:54%;left:20%;width:40%;" src="images/NN/784-1.PNG">
+			<img class="fragment" style="position:absolute;top:25%;left:70%;width:10%;" src="images/NN/784-2.PNG">
+			<br>
+			<div class="div-2-right">
+				<p class="fragment" style="font-size:75%;">轉個方向，將橫向轉成直向</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">這個圖片好複雜喔，是什麼?</p>		
+			</div>
+			<img style="position:absolute;top:20%;left:40%;width:32%; height:40%" src="images/NN/nn.PNG">
+			<img class="fragment" style="position:absolute;top:20%;left:40%;width:32%; src="images/NN/nn-1.PNG"></p>
+			<div class="div-2-right">
+				<p class="fragment" style="font-size:75%;">放進類神經網路中，最左邊將輸入的像素，</p>
+				<p class="fragment" style="font-size:75%;">經過中間兩層是隱藏層，最右邊是分類種類，</p>
+				<p class="fragment" style="font-size:75%;">這樣最右邊就是分類數字1到9	</p>
+			</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">數字0變成好多小區塊</p>		
+			</div>
+			<img style="position:absolute;top:32%;left:0%;width:22%;" src="images/NN/0.PNG">
+			<img class="fragment" style="position:absolute;top:44%;left:25%;width:12%;" src="images/NN/0-1.PNG">
+			<img class="fragment" style="position:absolute;top:44%;left:40%;width:12%;" width="10%" height="15%" src="images/NN/0-2.PNG">
+			<img class="fragment" style="position:absolute;top:44%;left:55%;width:12%;" src="images/NN/0-3.PNG">
+			<img class="fragment" style="position:absolute;top:44%;left:70%;width:12%;" src="images/NN/0-4.PNG">
+			<img class="fragment" style="position:absolute;top:44%;left:85%;width:12%;" src="images/NN/0-5.PNG">
+			<br>
+			<div class="div-2-right">
+				<p class="fragment" style="font-size:75%;">其中我們可以發現大部分的數字可以由其他</p>
+				<p class="fragment" style="font-size:75%;">細節組成，數字0的部分，我們可以拆解成這樣</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">數字1變成好多小區塊</p>		
+			</div>
+			<img style="position:absolute;top:32%;left:15%;width:22%;" width="20%" height="30%" src="images/NN/1.PNG">
+			<img class="fragment" style="position:absolute;top:44%;left:45%;width:12%;" src="images/NN/1-1.PNG">
+			<img class="fragment" style="position:absolute;top:44%;left:60%;width:12%;" src="images/NN/1-2.PNG">
+			<img class="fragment" style="position:absolute;top:44%;left:75%;width:12%;" src="images/NN/1-3.PNG">
+			<br>
+			<div class="div-2-right">
+				<p class="fragment" style="font-size:75%;">數字1的部分也是相同的，可以分為多個區段</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">數字9在視覺上可以想像成<br><b>數字1</b>加上<b>數字0</b>的合併</p>	
+			</div>
+			<img style="position:absolute;top:35%;left:15%;width:22%;" src="images/NN/9.PNG">
+			<img class="fragment" style="position:absolute;top:35%;left:45%;width:22%;" src="images/NN/0.PNG">
+			<img class="fragment" style="position:absolute;top:35%;left:75%;width:22%;" src="images/NN/1.PNG">
+			<br>
+			<div class="div-2-right">
+				<p class="fragment" style="font-size:75%;">沒錯!你真從聰明</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">上述運作流程是在隱藏層處裡的嗎?</p>
+			</div>
+			<img style="position:absolute;top:25%;left:37%;width:35%;" src="images/NN/nn-2.PNG">
+			<img class="fragment" style="position:absolute;top:25%;left:37%;width:35%;" src="images/NN/nn-3.PNG">
+			<br>
+			<div class="div-2-right">
+				<p class="fragment" style="font-size:75%;">對阿!在隱藏層從中找尋細節，到最後一層就可以辨識出它是哪個數字。
+				</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:70%;">老師學會了!像是這個獅子，</p>		
+				<p style="font-size:70%;">可以從中找到很多的細節，像是這樣</p>	
+			</div><br>
+			<img style="position: absolute; top: 30%; left: 25%; width:50%" src="images/NN/lion.PNG">
+			<img class="fragment" style="position: absolute; top: 30%; left: 25%;width:50%" src="images/NN/lion_filter.PNG">
+			<div class="div-2-right">
+				<p style="font-size:70%;">哇~你也懂得舉一反三啊~真優秀!</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<p style="font-size: 150%">NN->FCN</p>
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">可以轉換這種形式去呈現類神經網路，僅能一種物件輸入</p>		
+			</div>
+			<img style="position: absolute; top: 35%; left: 0%;width:20%" src="images/dif/cat.PNG">
+			<img class="fragment" style="position: absolute; top: 35%; left: 0%;width:20%" src="images/dif/cat_canny.PNG">
+			<img class="fragment" style="position: absolute; top: 35%; left: 25%;width:50%" src="images/dif/nn.PNG">
+			<img class="fragment" style="position: absolute; top: 35%; left: 80%;width:27%" src="images/dif/bin.PNG">
+			<br>
+			<div class="div-2-right">
+				<p style="font-size:80%;">最右邊的圖是各種種類的機率</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">在類神經前面加上卷積，這樣就是卷積網路</p>	
+			</div>
+			<img class="fragment" style="position: absolute; top: 35%; left: 0%;width:20%" src="images/dif/cat.PNG">
+			<img class="fragment" style="position: absolute; top: 35%; left: 25%;width:50%" src="images/dif/cnn.PNG">
+			<img class="fragment" style="position: absolute; top: 35%; left: 80%;width:27%" src="images/dif/bin.PNG">
+			<br>
+			<div class="div-2-right">
+				<p style="font-size:80%;">輸入單一物件圖就可以輸入，</p>
+				<p style="font-size:80%;">像是只有貓咪一個物件的圖像</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">全卷積網路，整合了卷積池和池化</p>	
+			</div>
+			<img class="fragment" style="position: absolute; top: 35%; left: 0%;width:30%" src="images/dif/cat&dog.PNG">
+			<img class="fragment" style="position: absolute; top: 35%; left: 40%;width:30% " src="images/dif/cnn-1.PNG">
+			<img class="fragment" style="position: absolute; top: 35%; left: 80%;width:27%" src="images/dif/heatmap.PNG">
+			<br>
+			<div class="div-2-right">
+				<p style="font-size:70%;">這樣可以從多物件的原圖輸入</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+
+		<section>
+			<p style="font-size: 150%">Sliding Window</p>
+		</section>		
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">Sliding Window就像你從管子中看一隻花豹，由左上至右下搜尋它</p>		
+			</div>
+			<img style="position: absolute; top: 30%; left: 35%;" width="40%" height="40%" src="images/cube/leopard_wrong_hole.png">
+			<div class="div-2-right">
+				<p style="font-size:80%;">那管子太大或太小就找不到花豹了</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">沒錯，如果管子太小，那就只能看到花豹的局部斑點!</p>			
+			</div>
+			<img style="position: absolute; top: 30%; left: 35%;" width="40%" height="40%" src="images/cube/leopard_hole.png">
+			<br>
+			<div class="div-2-right">
+				<p style="font-size:80%;">而且...你不一定知道花豹在哪!</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:70%;">所以我們只能用管子，從頭到尾掃過一遍，而且要祈禱管子大小，剛好符合豹的大小</p>		
+			</div>
+			<img style="position: absolute; top: 25%; left: 35%;" width="40%" height="40%" src="images/cube/leopard_righ_hole.png">
+			<div class="div-2-right">
+				<p style="font-size:70%;">也就是用各種不同大小的框框去，</p>
+				<p style="font-size:70%;">窮舉法，掃描整個畫面，然後去判斷是何物。</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+
+		<section>
+			<p style="font-size: 150%">卷積神經網路CNN</p>
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:70%;">老師~CNN做了什麼事情?</p>
+				<br>
+			</div>
+			<div class="div-1-right">
+				<br>
+				<p style="font-size:70%;">它以類似人類判斷物體的方式，以特徵優先判斷</p>
+				<p style="font-size:70%;">主要架構有<b>卷積層(Convolution Layer)</b>、<b>池化層</b></p>
+				<p style="font-size:70%;"><b>(Pooling Layer)</b>及<b>全連接層(Fully Connected Layer)</b></p>
+				<p style="font-size:70%;">卷積層中使用<b>Sliding Windows</b>方式找特徵</p>
+				<br>
+				</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">那這幾層架構分別做了什麼?</p>	
+			</div>
+			<!-- <img style="position: absolute; top: 35%; left: 5%; border:0px;" width="17%" height="20%" src="images/CNN/both.png"> -->
+			<img style="position: absolute; top: 25%; left: 35%; border:0px;" width="40%" height="40%" src="images/CNN/convSobel.gif">
+			<!-- <img style="position: absolute; top: 35%; left: 85%; border:0px;" width="17%" height="20%" src="images/CNN/horiz.png"> -->
+			<br>
+			<div class="div-2-right">
+				<p style="font-size:80%;"><b>卷積層</b>，它將輸入的圖片轉換成像素，來進行運算</p>
+				<p style="font-size:80%;">透過這樣的方式，生產出特徵圖</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">老師~可以講詳細一點嗎?</p>	
+			</div>
+			<img style="position: absolute; top: 35%; left: 5%; border:0px;" width="17%" height="20%" src="images/CNN/both.png">
+			<img style="position: absolute; top: 25%; left: 35%; border:0px;" width="40%" height="40%" src="images/CNN/convSobel.gif">
+			<img style="position: absolute; top: 35%; left: 85%; border:0px;" width="17%" height="20%" src="images/CNN/horiz.png">
+			<div class="div-2-right">
+				<p style="font-size:80%;">你看左邊的圖片作為輸入圖片，這一層的</p>
+				<p style="font-size:80%;">卷積是找出水平特徵，而右手邊輸出的圖片，</p>
+				<p style="font-size:80%;">明顯可以看出僅有水平特徵</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">喔~那池化層做了什麼?</p>	
+			</div>
+			<img style="position: absolute; top: 30%; left: 30%; width:50%;border:0px;"src="images/CNN/maxpool.PNG">
+			<div class="div-2-right">
+				<p style="font-size:80%;"><b>池化層</b>，將卷積層的特徵取出，選取數值最大的</p>
+				<p style="font-size:80%;">如此以來讓特徵更明顯，同時還可以縮減</p>
+				<p style="font-size:80%;">模型的大小，提高計算速度</p>	
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">全連接層接下來做了什麼?</p>	
+			</div>
+			<img style="position: absolute; top: 30%; left: 30%; width:50%;border:0px;"src="images/CNN/fullyconnect.PNG">
+			<div class="div-2-right">
+				<p style="font-size:80%;"><b>全連接層</b>，全連接層跟<b>類神經網路</b>做相同的事情</p>
+				<p style="font-size:80%;">接續池化層的資料，將明顯的特徵圖</p>
+				<p style="font-size:80%;">輸入全連接層，進行預測的分類</p>	
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<p style="font-size: 150%">R-CNN 系列</p>	
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:70%;"><b>R-CNN</b>又做了什麼?</p>		
+			</div>
+			<!-- <img style="position: absolute; top: 25%; left: 35%;" width="40%" height="40%" src="images/cube/leopard_righ_hole.png"> -->
+			<br><br>
+			<div class="div-1-right">
+				<p style="font-size:70%;">步驟一 產生出2000可能區域(Region proposal)</p>
+				<p style="font-size:70%;">步驟二 每一個region proposal所選出丟入CNN</p>
+				<p style="font-size:70%;">步驟三 利用SVM(Support Vector Machine)分類器區分屬於哪類</p>
+				<p style="font-size:70%;">步驟四 線性回歸模型校正bounding box位置</p>
+				<p style="font-size:70%;"></p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>	
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:70%;"><b>Fast R-CNN</b>做了什麼?</p>		
+			</div>
+			<!-- <img style="position: absolute; top: 25%; left: 35%;" width="40%" height="40%" src="images/cube/leopard_righ_hole.png"> -->
+			<br><br>
+			<div class="div-1-right">
+				<p style="font-size:70%;">步驟一 產生出2000可能區域(Region proposal)</p>
+				<p style="font-size:70%;">步驟二 region proposal進行ROI pooling，接著輸出到CNN</p>
+				<p style="font-size:70%;">步驟三 再輸出到全連接層運算去分類</p>
+				<p style="font-size:70%;"></p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>	
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:70%;"><b>Faster R-CNN</b>又差在哪裡?</p>		
+			</div>
+			<!-- <img style="position: absolute; top: 25%; left: 35%;" width="40%" height="40%" src="images/cube/leopard_righ_hole.png"> -->
+			<br><br>
+			<div class="div-1-right">
+				<p style="font-size:70%;">步驟一 透過CNN取得feature map</p>
+				<p style="font-size:70%;">步驟二 利用RPN網路將feature map放入全連接層運算，輸出較低維向量的特徵</p>
+				<p style="font-size:70%;">步驟三 將低維向量輸出至兩層全連接層，合併後進行分類</p>
+				<p style="font-size:70%;"></p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>	
+		
+<!--    //////////////////////////////////////////////////////-->
+			
+
+	</section>
+
+
+
+	<section>
+		<section>
+			<h2>&ensp;YOLO&ensp;</h2>
+		</section>
+
+		<!-- <section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;"></p>		
+			</div>
+			<img class="img-center-right3" width="60%" height="48%" src="images/YOLO/sxs.PNG">
+			
+			<div class="div-2-right"></div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section> -->
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">老師~一直說YOLO物件辨識，</p>
+				<p style="font-size:80%;">我已經知道物件辨識是什麼了!</p>
+				<p style="font-size:80%;">但是YOLO到底是什麼意思啊?</p>	
+			</div>						
+			<img style="position: absolute; top: 35%; left: 35%;" width="40%" class="plain fragment" src="./images/YOLO/yolo.png">		
+			<div class="div-2-right">
+				<p class="fragment" style="font-size:75%;">就是You Only Look Once，</p>
+				<p class="fragment" style="font-size:80%;">就是你只看一次的意思!</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">喔~那是誰提出這個方法的啊?</p>
+			</div>	
+			<img style="position: absolute; top: 25%; left: 35%;" width="40%" class="plain fragment" src="./images/YOLO/Joseph Redmon.jpg">	
+			<div class="div-2-right">
+				<p class="fragment" style="font-size:75%;">作者是<b>Joseph Redmon</b>，</p>
+				<p class="fragment" style="font-size:80%;">他是華盛頓大學計算機科學博士生</p>		
+				<p class="fragment" style="font-size:80%;">是基於CNN提出了一種精確的、</p>	
+				<p class="fragment" style="font-size:80%;">即時性的方法來實現的物件辨識</p>	
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">所以YOLO可以辨識很多東西嗎?</p>
+			</div>		
+			<img style="position: absolute; top: 35%; left: 10%;" width="20%" class="plain fragment" src="./images/YOLO/kids.jpg">	
+			<img style="position: absolute; top: 35%; left: 35%;" width="20%" class="plain fragment" src="./images/YOLO/cat.jpg">	
+			<img style="position: absolute; top: 35%; left: 60%;" width="20%" class="plain fragment" src="./images/YOLO/dog.jpg">	
+			<img style="position: absolute; top: 35%; left: 85%;" width="20%" class="plain fragment" src="./images/YOLO/car.jpg">	
+			<div class="div-2-right">
+				<p class="fragment" style="font-size:75%;">目前可以辨識的類別有20種</p>
+				<p class="fragment" style="font-size:80%;">包含最基本的人、鳥、貓、牛、狗、馬、羊，</p>		
+				<p class="fragment" style="font-size:80%;">還有交工工具:飛機、自行車、船、汽車...等</p>	
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:80%;">老師那它是怎麼運作的?</p>
+				<br>
+			</div>
+			<div class="div-1-right">
+				<br>
+				<p class="fragment" style="font-size:75%;">運作流程</p>
+				<p class="fragment" style="font-size:65%;"><b>步驟一</b> 影象縮放:將圖像縮放置特定大小</p>	
+				<p class="fragment" style="font-size:65%;"><b>步驟二</b> 執行一個卷積神經網路:在神經網路中，</p>
+				<p class="fragment" style="font-size:65%;">同時進行<b>卷積</b>運算及<b>anchor box</b>的分類運算</p>
+				<p class="fragment" style="font-size:65%;">(卷積運算使用的框架是Darknet-19)</p>
+				<p class="fragment" style="font-size:65%;"><b>步驟三</b> 偵測結果:使用NMS篩選，以此選出最佳結果</p>	
+				<br>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+	</section>
+
+	<!-- -->
+
+	
+	<section>
+		<section>
+			<h2>&ensp;Anchor Box&ensp;</h2>
+		</section>
+
+		<section data-audio-src="audio/anchorbox/anchorbox_1_男.mp3">
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:80%;">
+					<p style="font-size:75%;">這是 yolo嗎 ？</p>
+				</p>
+			</div>
+			<br>
+			<div>
+				<img style="position:absolute; top:30%; left:15%; border:0px; width: 90%;" src="video/V2.jpg">
+			</div>
+			<br><br><br><br>
+			<div class="div-1-right">
+				<p style="font-size:80%;">
+					<p class="fragment" style="font-size:75%;" data-audio-src="audio/anchorbox/anchorbox_1_女_1.mp3">不錯</p>
+					<p class="fragment" style="font-size:75%;" data-audio-src="audio/anchorbox/anchorbox_1_女_2.mp3">上圖是 yolo的檢測流程</p>
+				</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+		
+		<section data-audio-src="audio/anchorbox/anchorbox_2_男.mp3">
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:75%;">這些是什麼框框 ？</p>
+			</div>
+			<div>
+				<img style="position:absolute; top:20%; left:15%; border:0px; width: 80%;" src="video/5_anchor box.jpg">
+				<!-- <img style="height:25vh; border:0px;" src="video/5_anchor box.jpg"> -->
+			</div>
+			<br><br><br><br><br><br>
+			<div class="div-1-right">
+				<p style="font-size:80%;">
+					<p class="fragment" style="font-size:75%;" data-audio-src="audio/anchorbox/anchorbox_2_女_1.mp3">是anchor box阿</p>
+					<p class="fragment" style="font-size:75%;" data-audio-src="audio/anchorbox/anchorbox_2_女_2.mp3">你第一次看到嗎 ？</p>
+				</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+		
+		<section data-audio-src="audio/anchorbox/anchorbox_3_男.mp3">
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:80%;">
+					<br>
+					<p style="font-size:75%;">對阿～ &nbsp好新奇喔</p>
+					<br>
+				</p>
+			</div>
+			<div class="div-1-right">
+				<p style="font-size:80%;">
+					<p class="fragment" style="font-size:75%;" data-audio-src="audio/anchorbox/anchorbox_3_女_1.mp3">在yolov2的設定檔裡,</p>
+					<p class="fragment" style="font-size:60%;" data-audio-src="audio/anchorbox/anchorbox_3_女_2.mp3">
+						原始數據 : anchors &nbsp = &nbsp (0.57273, 0.677385), &nbsp (1.87446, 2.06253), &nbsp (3.33843, 5.47434), &nbsp (7.88282, 3.52778), &nbsp (9.77052, 9.16828)
+					</p><br>
+					<p class="fragment" style="font-size:70%;" data-audio-src="audio/anchorbox/anchorbox_3_女_3.mp3">anchor box長寬是<b>相對於input &nbsp image的比例大小，</b></p>
+					<p class="fragment" style="font-size:70%;" data-audio-src="audio/anchorbox/anchorbox_3_女_4.mp3">所以是與image大小相關的喔 ！</b></p>
+				</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+		
+		<section data-audio-src="audio/anchorbox/anchorbox_4_女_1.mp3">
+			<img class="img-right-2 plain" src="images/girl.svg">
+			<div class="div-1-right">
+				<p style="font-size:80%;">
+					<br>
+					<p style="font-size:80%;">有興趣學習yolo裡的 anchor box知識嗎？</p>
+					<br>				
+			</div>
+			<br><br><br>			
+			<img class="img-left-2 plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:80%;">
+					<p class="fragment" style="font-size:75%;" data-audio-src="audio/anchorbox/anchorbox_4_男.mp3">好阿！ &nbsp 好阿！</p>
+				</p>
+			</div>
+			
+		</section>
+
+		
+		<section data-audio-src="audio/anchorbox/anchorbox_5_男.mp3">
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:80%;">anchor box是怎麼應用在yolo的程式上 ？</p>
+			</div>
+			<div>
+				<video data-autoplay style="position:absolute; top:20%; left:15%; border:0px;" width="750px" loop="false" muted="true" controls>
+					<source type="video/mp4" src="./video/V_1_Trim_2.mp4">		
+				</video>
+			</div>
+			<br><br><br><br><br><br>
+			<div class="div-1-right">
+				<p class="fragment" style="font-size:60%;" data-audio-src="audio/anchorbox/anchorbox_5_女_1.mp3" cg-autoplay>步驟 1 : 我們把feature map切成13x13個網格</p>
+				<p class="fragment" style="font-size:60%;" data-audio-src="audio/anchorbox/anchorbox_5_女_2.mp3">步驟 2 : 把每個網格的中心當為錨點(anchor point)</p>
+				<p class="fragment" style="font-size:60%; margin-bottom:25px" data-audio-src="audio/anchorbox/anchorbox_5_女_3.mp3">步驟 3 : 將5個anchor box套入網格作計算</p>
+				<p class="fragment" style="font-size:70%;" data-audio-src="audio/anchorbox/anchorbox_5_女_4.mp3"><b>全部網格都要做步驟3的計算喔!</b></p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+		
+		<section data-audio-src="audio/anchorbox/anchorbox_6_男.mp3">
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:80%;">老師 您可以示範給學生看嗎 ？</p>
+			</div>			
+			<div>
+				<video data-autoplay style="position:absolute; top:25%; left:15%; border:0px; width:70%"  loop="false" muted="true" controls>
+					<source type="video/mp4" src="./video/V_1_Trim_3.mp4">
+				</video>
+			</div>
+			<br><br><br><br><br><br>
+			<div class="div-1-right">
+				<p class="fragment" style="font-size:60%;" data-audio-src="audio/anchorbox/anchorbox_6_女_1.mp3">以這個網格為範例</p>
+				<p class="fragment" style="font-size:60%;" data-audio-src="audio/anchorbox/anchorbox_6_女_2.mp3">5個 anchor box分別套入網格作計算</p>
+				<p class="fragment" style="font-size:70%;" data-audio-src="audio/anchorbox/anchorbox_6_女_3.mp3">計算後，就會得到在<b>區域中</b>是否<b>包含物體的信心值</b></p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section data-audio-src="audio/anchorbox/anchorbox_7_男.mp3">
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:60%;">原來有那麼複雜的計算程序喔～</p>
+				<br>
+			</div>
+			<div>
+			<div class="div-1-right">
+				<br>
+				<p class="fragment" style="font-size:60%;" data-audio-src="audio/anchorbox/anchorbox_7_女_1.mp3">不用擔心，老師一步一步帶你了解yolo</p>
+				<br>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section data-audio-src="audio/anchorbox/anchorbox_8_男.mp3">
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:60%;">對了！ &nbsp 我們anchor box計算的值跑去哪裡了？</p>
+			</div>
+			<div>
+				<img style="position:absolute; top:20%; left:15%; border:0px; width:70%" src="video/anchor box的表示.jpg">
+			</div>
+			<br><br><br><br><br><br>
+			<div class="div-1-right">
+				<p class="fragment" style="font-size:60%; margin-bottom:25px" data-audio-src="audio/anchorbox/anchorbox_8_女_1.mp3">為了要解釋Tensor的產生，<br>
+					先讓你了解一個 anchor box會儲存哪些資料吧?</p>
+				<p class="fragment" style="font-size:60%;" data-audio-src="audio/anchorbox/anchorbox_8_女_2.mp3">1個 anchor box除了儲存<b>置信度</b>外</p>
+				<p class="fragment" style="font-size:60%;" data-audio-src="audio/anchorbox/anchorbox_8_女_3.mp3">還包括了，anchor box的<b>長寬、座標</b>和<b>類別資訊</b></p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+		
+		<section data-audio-src="audio/anchorbox/anchorbox_9_男.mp3">
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:80%;">ab1 這裡代表的是什麼呢？</p>
+			</div>
+			<div>
+				<video data-autoplay style="position:absolute; top:25%; left:15%; border:0px; width:80%" loop="false" muted="true" controls>
+					<source type="video/mp4" src="./video/V_2_Trim_1.mp4">
+				</video>
+			</div><br><br><br><br><br><br>
+			<div class="div-1-right">
+				<p class="fragment" style="font-size:60%;" data-audio-src="audio/anchorbox/anchorbox_9_女_1.mp3">我們簡稱 anchor box 1為 <b>ab1</b></p>
+				<p class="fragment" style="font-size:60%;" data-audio-src="audio/anchorbox/anchorbox_9_女_2.mp3">然而，一個網格計算出 5個anchor資料</p>
+				<p class="fragment" style="font-size:60%;" data-audio-src="audio/anchorbox/anchorbox_9_女_3.mp3">也就是13x13個網格會產生 <b>13X13x5個</b>資料量</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+		
+		<section data-audio-src="audio/anchorbox/anchorbox_10_男.mp3">
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:70%;">老師！老師！ &nbsp 你剛剛提到的"Tensor"又是什麼呀！</p>
+			</div>
+			<div>
+				<video data-autoplay style="position:absolute; top:21%; left:15%; border:0px; width:75%" loop="false" muted="true" controls>
+					<source type="video/mp4" src="./video/V_2_Trim_2.mp4">
+				</video>
+			</div><br><br><br><br><br>
+			<div class="div-1-right">
+				<p class="fragment" style="font-size:80%; margin-bottom:20px;" data-audio-src="audio/anchorbox/anchorbox_10_女_1.mp3">沒錯！ 我正要提到所謂的Tensor</p>
+				<p class="fragment" style="font-size:60%;" data-audio-src="audio/anchorbox/anchorbox_10_女_2.mp3">我們把一個網格的資料量稱為Tensor</p>
+				<p class="fragment" style="font-size:50%;" data-audio-src="audio/anchorbox/anchorbox_10_女_3.mp3">Tensor 儲存了5個 anchor box計算的資訊，所以資料深度是 5x25</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+		
+		<section data-audio-src="audio/anchorbox/anchorbox_11_男.mp3">
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:80%;">喔～ 原來這就是Tensor阿！</p>
+			</div>
+			<div>
+				<video data-autoplay style="position:absolute; top:25%; left:15%; border:0px; width:75%" loop="false" muted="true" controls>
+					<source type="video/mp4" src="./video/V_2_Trim_3.mp4">
+				</video>
+			</div><br><br><br><br><br><br><br>
+			<div class="div-1-right">
+				<p class="fragment" style="font-size:60%;" data-audio-src="audio/anchorbox/anchorbox_11_女_1.mp3">最後，我們回顧一下輸入圖會產生的Tensor資料</p>
+				<p class="fragment" style="font-size:60%;" data-audio-src="audio/anchorbox/anchorbox_11_女_2.mp3">因為一張圖被切割成 13x13個網格</p>
+				<p class="fragment" style="font-size:50%;" data-audio-src="audio/anchorbox/anchorbox_11_女_3.mp3">又因為一個Tensor 資料深度是 125，所以一張圖的總資料量是 <b>13x13x125 ！</b></p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+		
+		<section data-audio-src="audio/anchorbox/anchorbox_12_男.mp3">
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:75%;">今天學習的東西好多喔！<br>
+					老師～老師 可以幫我統整一下嗎？</p>
+			</div>
+			<div>
+				<img style="position:absolute; top:25%; left:20%; border:0px; width:65%" src="video/V2_DK圖.jpg">
+			</div>
+			<br><br><br><br><br>
+			<div class="div-1-right">
+				<p style="font-size:80%;">
+					<p class="fragment" style="font-size:60%;" data-audio-src="audio/anchorbox/anchorbox_12_女_1.mp3">我們上方看到Darknet-19的架構，是yolo的網路骨幹</p>
+					<p class="fragment" style="font-size:50%;" data-audio-src="audio/anchorbox/anchorbox_12_女_2.mp3">yolov2<b>全部都是卷積層</b>，輸出就是為了跑出中間的<b>"類別框框圖"</b></p>
+					<p class="fragment" style="font-size:50%;" data-audio-src="audio/anchorbox/anchorbox_12_女_3.mp3">最後經過 <b>NMS</b> 來<b>"篩選掉重覆和不可能的框框"</b></p>
+					<p class="fragment" style="font-size:50%;" data-audio-src="audio/anchorbox/anchorbox_12_女_4.mp3">就能得到我們的預測圖囉！</p>
+				</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+	</section>
+<!-- Darknet-19 -->
+	<section>
+		<section>
+			<h2>&ensp;Darknet-19&ensp;</h2>
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<p style="font-size:80%;">Darknet是什麼東西啊?</p>
+			</div>
+			<img style="position: absolute; top: 22%; left: 30%;" width="50%" class="plain fragment" src="./images/YOLO/darknet-19.png">
+			<br><br><br><br><br>
+			<div class="div-1-right">
+				<p class="fragment" style="font-size:70%;">以上是它的縮圖，它是卷積網路的架構，</p>
+				<p class="fragment" style="font-size:70%;">Darknet-19是以原先的Darknet為基礎，</p>
+				<p class="fragment" style="font-size:70%;">移除最後的類神經網路，再加上一些修改所得到的</p>
+				<!-- <p class="fragment" style="font-size:60%;">我們是透過卷積網路取得特徵圖，以此進行anchor box</p> -->
+			</div>
+			<img class="img-right plain" src="images/girl.svg">	
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:80%;">那它在物件辨識有什麼幫助?</p>
+				<br>
+			</div>
+			<div class="div-1-right">
+				<br>
+				<p class="fragment" style="font-size:80%;">以它的架構進行卷積運算</p>
+				<p class="fragment" style="font-size:80%;">我們是透過卷積網路取得特徵圖，</p>
+				<p class="fragment" style="font-size:80%;">在獲得特徵圖的同時，進行anchor box的動作</p>
+				<p class="fragment" style="font-size:80%;">因此，在完成運算的時候，</p>
+				<p class="fragment" style="font-size:80%;">我們就可以知道被辨識的物件是什麼</p>
+				<br>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">	
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:80%;">老師~能展示給我看嗎?</p>
+				<br>
+			</div>
+			<div class="div-1-right">
+				<br>
+				<p class="fragment" style="font-size:80%;">這裡有一個視覺化展示的網站</p>
+				<p class="fragment" style="font-size:80%;">適合有學習過深度學習的同學</p>
+				<p class="fragment" style="font-size:80%;">你有興趣也可以看一下!</p>
+				<p class="fragment" style="font-size:80%;">請看下一頁</p>
+				<br>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">	
+		</section>
+
+		<section>
+			<iframe src="./system/index.html" style="position:absolute; top:-5%; left:0%;" width="100%" height="2000%"></iframe>
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:80%;">哇~這樣就可以知道它運作時，圖片在過程中的變化了</p>
+				<br>
+			</div>
+			<div class="div-1-right">
+				<br>
+				<p class="fragment" style="font-size:70%;">對阿，透過此系統，我們在看物件辨識的結果時，</p>
+				<p class="fragment" style="font-size:70%;">可以由圖像呈現，讓我們清楚知道過程做了什麼事情，而造成最後的結果</p>
+				<br>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">	
+		</section>
+
+		
+
+	</section>
+<!-- 特色 -->
+	<section>
+		<section>
+			<h2>&ensp;比較&特色&ensp;</h2>
+		</section>
+		
+		<section>
+			<table>
+				<thead style="background-color: #8f793f;">
+					<tr>
+						<td style="border:1px solid #aa0;padding:5px;">技術</td>
+						<td style="border:1px solid #aa0;padding:5px;">R-CNN</td>
+						<td style="border:1px solid #aa0;padding:5px;">Fast R-CNN</td>
+						<td style="border:1px solid #aa0;padding:5px;">Faster R-CNN</td>
+						<td style="border:1px solid #aa0;padding:5px;">YOLO</td>
+						<td style="border:1px solid #aa0;padding:5px;">YOLOv2</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td style="border:1px solid #aa0;padding:5px;"><p style="font-size:80%;">FPS<br>速度</p></td>
+						<td style="border:1px solid #aa0;padding:5px;">0.05</td>
+						<td style="border:1px solid #aa0;padding:5px;">0.5</td>
+						<td style="border:1px solid #aa0;padding:5px;">7</td>
+						<td style="border:1px solid #aa0;padding:5px;"><p class="fragment" style="font-size:110%;color: #f00">45</p></td>
+						<td style="border:1px solid #aa0;padding:5px;"><p class="fragment" style="font-size:110%;color: #f00">40</p></td>
+					</tr>
+					<tr>
+						<td style="border:1px solid #aa0;padding:5px;"><p style="font-size:80%;">mAP<br>準度</p></td>
+						<td style="border:1px solid #aa0;padding:5px;">66</td>
+						<td style="border:1px solid #aa0;padding:5px;">70</td>
+						<td style="border:1px solid #aa0;padding:5px;">73</td>
+						<td style="border:1px solid #aa0;padding:5px;"><p class="fragment" style="font-size:110%;color: #f00">63</p></td>
+						<td style="border:1px solid #aa0;padding:5px;"><p class="fragment" style="font-size:110%;color: #f00">78</p></td>
+					</tr>
+					<tr>
+						<td style="border:1px solid #aa0;padding:5px;">作者</td>
+						<td style="border:1px solid #aa0;padding:5px;"><p style="font-size:80%">Girshick</p></td>
+						<td style="border:1px solid #aa0;padding:5px;"><p style="font-size:80%">Girshick</p></td>
+						<td style="border:1px solid #aa0;padding:5px;"><p style="font-size:80%">Girshick<br>何愷明</p></td>
+						<td style="border:1px solid #aa0;padding:5px;"><p style="font-size:80%">Redmon</p></td>
+						<td style="border:1px solid #aa0;padding:5px;"><p style="font-size:80%">Redmon</p></td>
+					</tr>
+					<tr>
+						<td style="border:1px solid #aa0;padding:5px;"><p>照片</p></td>
+						<td style="border:1px solid #aa0;padding:5px;"><img src="./images/table/rbg.jpg" width="50"></td>
+						<td style="border:1px solid #aa0;padding:5px;"><img src="./images/table/rbg.jpg" width="50"></td>
+						<td style="border:1px solid #aa0;padding:5px;"><img src="./images/table/rbg.jpg" width="50">
+							<img src="./images/table/v2-1e4d3fb6e340fe7ab583d7155704e8dd_hd.jpg" height="50"></td>
+						<td style="border:1px solid #aa0;padding:5px;"><img src="./images/table/avatars-000006013198-8trs8i-t500x500.jpg" width="70"></td>
+						<td style="border:1px solid #aa0;padding:5px;"><img src="./images/table/avatars-000006013198-8trs8i-t500x500.jpg" width="70"></td>
+					</tr>
+					<tr>
+						<td style="border:1px solid #aa0;padding:5px;"><p>Year</p></td>
+						<td style="border:1px solid #aa0;padding:5px;">2014</td>
+						<td style="border:1px solid #aa0;padding:5px;">2015</td>
+						<td style="border:1px solid #aa0;padding:5px;">2016</td>
+						<td style="border:1px solid #aa0;padding:5px;">2016</td>
+						<td style="border:1px solid #aa0;padding:5px;">2017</td>
+					</tr>
+
+					<tr>
+						<td style="border:1px solid #aa0;padding:5px;"><p>論文</p></td>
+						<td style="border:1px solid #aa0;padding:5px;"><a target="_blank" href="https://arxiv.org/pdf/1311.2524.pdf"><img src="./images/table/article-svgrepo-com.svg" width="50"></a></td>
+						<td style="border:1px solid #aa0;padding:5px;"><a target="_blank" href="http://openaccess.thecvf.com/content_iccv_2015/papers/Girshick_Fast_R-CNN_ICCV_2015_paper.pdf"><img src="./images/table/article-svgrepo-com.svg" width="50"></a></td>
+						<td style="border:1px solid #aa0;padding:5px;"><a target="_blank" href="https://arxiv.org/pdf/1506.01497.pdf"><img src="./images/table/article-svgrepo-com.svg" width="50"></a></td>
+						<td style="border:1px solid #aa0;padding:5px;"><a target="_blank" href="https://pjreddie.com/media/files/papers/yolo_1.pdf"><img src="./images/table/article-svgrepo-com.svg" width="50"></a></td>
+						<td style="border:1px solid #aa0;padding:5px;"><a target="_blank" href="https://pjreddie.com/media/files/papers/YOLO9000.pdf"><img src="./images/table/article-svgrepo-com.svg" width="50"></a></td>
+					</tr>						
+				</tbody>
+			</table>
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:80%;">與其他方法相比，YOLO 有何獨到之處?</p>		
+				<br>
+			</div>
+			<div class="div-1-right">
+				<br>
+				<p style="font-size:80%;">YOLO 速度快!</p>
+				<p style="font-size:80%;">請看下一頁比較表。</p>
+				<br>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">哇~~~ YOLO 比其他方法快了六倍!</p>		
+			</div>
+			<iframe src="./images/histogram/fps.html" style="position:absolute; top:25%; left:10%;" scrolling="no" width="960" height="450"></iframe>
+			<br><br>
+			<div class="div-2-right"><p style="font-size:80%;">YOLO 每秒鐘可以處理 40 幀畫面!</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:80%;">比起 R-CNN 家族，YOLO 準確度，何如?</p>	
+				<br>	
+			</div>
+			<div class="div-1-right">
+				<br>
+				<p style="font-size:80%;">YOLO 辨識準確度可達 78 mAP。</p>
+				<p style="font-size:80%;">請看下一頁比較表。</p>
+				<br>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-2-left">
+				<p style="font-size:80%;">準確度 mAP (Mean Average Precision)</p>		
+			</div>
+			<iframe src="./images/histogram/map.html" style="position:absolute; top:25%; left:10%;" scrolling="no" width="960" height="450"></iframe>
+			<br><br>
+			<div class="div-2-right"><p style="font-size:80%;">YOLO 沒有犧牲辨識準確度。</p>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+		<section>
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:80%;">相較於其他方法，YOLO 有何獨特之處?</p>		
+				<br>
+			</div>
+			<div class="div-1-right">
+				<br>
+				<p style="font-size:80%;">在FPS大於20幀時，</p>
+				<p style="font-size:80%;">是一般人類眼睛看到順暢的畫面，</p>
+				<p style="font-size:80%;">而且只有YOLO在FPS大於20幀，</p>
+				<p style="font-size:80%;">所以目前方法僅 YOLO 可以達成即時辨識並呈現</p>
+				<br>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">
+		</section>
+
+	</section>
+
+	<section>
+		<section>
+			<h2>&ensp;應用&ensp;</h2>
+		</section>
+
+		<!-- <section>
+			<h3>&ensp;YOLO v2&ensp;</h3>
+			<iframe src = "https://kagu82104.github.io/thesissystem/system/example/index.html" scrolling="yes" frameborder="0" width="960" height="500" style="margin-top: 5px"></iframe>
+		</section>
+
+		<section>
+			<h3>&ensp;安裝&ensp;</h3>
+			<iframe src = "https://kagu82104.github.io/thesissystem/" scrolling="yes" frameborder="0" width="960" height="600" style="margin-top: 5px"></iframe>
+		</section> -->
+
+		<section>
+			<!-- <h3>&ensp;YOLO應用&ensp;</h3><br> -->
+			Case 1 - 合成孔徑雷達影像 船隻辨識<br>
+			Case 2 - 甭舉手、看鏡頭(自動點名APP)<br>
+			Case 3 - 影片人物辨識<br>
+			Case 4 - 書法帖筆畫辨識
+			
+		</section>
+
+		
+		<section>
+			<iframe src = "./images/application/case1/index.html" scrolling="yes" frameborder="0" width="1024" height="600" style="margin-top: 5px"></iframe>
+		</section>
+		<!-- 分隔線 -->
+		<section>
+			<iframe src = "./images/application/case2/index.html" scrolling="yes" frameborder="0" width="1024" height="600" style="margin-top: 5px"></iframe>
+		</section>
+		<!-- 分隔線 -->
+		<section>
+			<iframe src = "./images/application/case3/index.html" scrolling="yes" frameborder="0" width="1024" height="600" style="margin-top: 5px"></iframe>
+		</section>
+		<!-- 分隔線 -->
+		<section>
+			<iframe src = "./images/application/case4/index.html" scrolling="yes" frameborder="0" width="1024" height="600" style="margin-top: 5px"></iframe>
+		</section>
+
+	</section>
+	<section>
+		<section>
+			<h2>&ensp;推廣&ensp;</h2>
+		</section>
+
+		<section>
+				<p>推廣研習會: 人工智慧技術視覺化展示系統 YOLOv2</p>
+				日期: 2019.12.13。<br>
+				地點:國立臺北科技大學、綜科第二演講廳。<br>
+				<img style="border:0px" src="./images/fig2/5.jpg" width="720">
+
+		</section>
+
+		<section>
+				王怡鈞(聖約翰科技大學副校長)<br>
+				<img style="border:0px" src="./images/fig2/wang.jpg" width="120"><br>
+				<p style="font-size:80%;">講題:人工智慧發展</p>
+
+				<span style="font-size: 16pt;">
+				主要經歷：
+				<ul>
+					美商英特爾Intel(Y2010~2018)、
+					國際客戶營運總監、
+					雲端資料中心暨新科技產品,業務暨技術行銷總監、
+					亞太卓越技術推廣中心,雲端首席專家、
+					美商微軟Microsoft(Y2004~2010)亞太業務 技術總監、
+					美商IBM國際商務機器(Y2003-2004, Y1992-1994)、
+				</ul>
+				</span>
+		</section>
+
+		<section>
+				鄭智成(英特爾商用業務總監)<br>
+				<img style="border:0px" src="./images/fig2/alex.jpg" width="120"><br>
+				<p style="font-size:80%;">講題:人工智慧的回顧與展望</p>
+				<span style="font-size: 16pt;">
+			    內容摘要: <br>
+			    <ul>
+			        人工智慧的回顧與展望、
+			        人工智慧與相關熱門議題的討論 (5G, 自駕車, 無人機)、
+			        美中角力、
+			        就業環境與工作機會、
+				</ul>
+						講者簡介:<br>
+						鄭智成(Alex Cheng)負責英特爾台灣分公司對企業及政府部門之事業拓展，並曾負責推廣及強化台灣市場之垂直產業與獨立軟體開發商、及與應用解決方案廠商之合作關係。在此之前，曾任英特爾策略聯盟經理，以及英特爾技術專案經理。
+				        在加入英特爾之前, 先後於台灣微軟公司擔任產品行銷經理，負責資料庫系統之規劃與產品行銷之相關業務，以及旭光公司擔任資訊處經理,為該公司資訊部門之最高主管。鄭智成畢業於國立台灣大學商學研究所碩士班。
+				</span>
+		</section>	
+
+		<section>
+				王怡淳(溫瑞爾科技市場策略協理)<br>
+				<img style="border:0px" src="./images/fig2/chris.jpg" width="120">
+				<p style="font-size:80%;">講題: AI 的演進如何影響職場與企業的運作</p>
+				<span style="font-size: 16pt;">
+				內容摘要:
+				<ul>
+					根基的重要-物聯網與人工智慧、
+					物聯網概念與應用、
+					AI-移動互聯網時代的企業運作、
+					你該準備好什麼？
+				</ul>
+				講者簡介: <br>
+				王怡淳(Chris Wang)負責溫瑞爾亞太地區的戰略合作夥伴事務，主導合作夥伴生態，強化企業與合作夥伴的產品服務結盟與推廣。在此之前，曾任英特爾亞太區物聯網軟件戰略總監，英特爾中國區的軟件服務部門經理，SAP(思愛普)亞太區資深業務經理。王怡淳畢業於澳洲天主教大學，擁有MBA學位。
+				</span>
+		</section>	
+
+		<section>
+				<p style="font-size:90%;">推廣</p>
+				<p style="font-size:80%;">2019.10.17。新北市立中和高中自然組。</p>
+				<img style="border:0px" src="./images/fig2/2019.10.17.jpg" width="960">
+		</section>
+
+		<section>
+				<p style="font-size:90%;">推廣</p>
+				<p style="font-size:80%;">2019.12.06。國立彰化師範大學附屬高級工業職業學校。</p>
+				<img style="border:0px" src="./images/fig2/2019.12.06.jpg" width="960">
+		</section>
+
+		<section>
+				<p style="font-size:90%;">推廣</p>
+				<p style="font-size:80%;">2019.12.10。中正高中。</p>
+				<img style="border:0px" src="./images/fig2/2019.12.10.png" width="960">
+		</section>
+
+	</section>
+
+	<!-- <section>
+		<h2>推廣</h2>
+		<p>GPL v3 (<a href="http://www.gnu.org/copyleft/gpl.html">http://www.gnu.org/copyleft/gpl.html</a>).</p>
+	</section> -->
+
+	<!-- <section>
+		<section data-state="no-toc-progress">
+			<h1 class="no-toc-progress">Reveal.js-TOC-Progress</h1>
+			<h3>LaTeX Beamer-like progress indicator according to table of contents for Reveal.js HTML presentations</h3>
+			<p>
+				<small>Created by <a href="https://github.com/e-gor">Igor Leturia <em>e-gor</em></a> / <a href="http://twitter.com/ileturia">@ileturia</a> / <a href="http://eibar.org/blogak/e-gorblog">http://eibar.org/blogak/e-gorblog</a></small>
+			</p>
+		</section>
+	</section> -->
+
+	</div>
+
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+
+		// Full list of configuration options available here:
+		// https://github.com/hakimel/reveal.js#configuration
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			history: true,
+			center: true,
+
+			theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+			transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+			// Parallax scrolling
+			// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+			// parallaxBackgroundSize: '2100px 900px',
+
+			// Optional libraries used to extend on reveal.js
+			keyboard: { 
+				82: function() { Recorder.toggleRecording(); },	// press 'r' to start/stop recording
+				90: function() { Recorder.downloadZip(); }, 	// press 'z' to download zip containing audio files
+				84: function() { Recorder.fetchTTS(); } 	// press 't' to fetch TTS audio files
+			},
+			audio: {
+				prefix: 'audio/', 	// audio files are stored in the "audio" folder
+				suffix: '.mp3',		// audio files have the ".ogg" ending
+				textToSpeechURL: null,  // the URL to the text to speech converter
+				defaultNotes: false, 	// use slide notes as default for the text to speech converter
+				defaultText: false, 	// use slide text as default for the text to speech converter
+				advance: 500, 		// advance to next slide after given time in milliseconds after audio has played, use negative value to not advance 
+				autoplay: false,	// automatically start slideshow
+				defaultDuration: 5,	// default duration in seconds if no audio is available 
+				defaultAudios: false,	// try to play audios with names such as audio/1.2.ogg
+				playerOpacity: 0.05,	// opacity value of audio player if unfocused
+				playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls 
+				startAtFragment: true, // when moving to a slide, start at the current fragment or at the start of the slide
+			},
+			dependencies: [
+				{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+				{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+				{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+				{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+				// TOC-Progress plugin
+				{ src: 'plugin/toc-progress/toc-progress.js', async: true, callback: function() { toc_progress.initialize(); toc_progress.create(); } },
+				// audio-slideshow plugin
+				{ src: 'plugin/audio-slideshow/RecordRTC.js', condition: function( ) { return !!document.body.classList; } },
+				{ src: 'plugin/audio-slideshow/slideshow-recorder.js', condition: function( ) { return !!document.body.classList; } },
+				{ src: 'plugin/audio-slideshow/audio-slideshow.js', condition: function( ) { return !!document.body.classList; } }
+			]
+		});
+
+	</script>
+
+</body>
+
+</html>

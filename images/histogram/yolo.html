@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>histogram</title>
+	<script src="./Chart.bundle.js"></script>
+	<script src="./utils.js"></script>
+	<style>
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="container" style="width: 90%;">
+		<canvas id="canvas"></canvas>
+	</div>
+
+	<script>
+
+		// https://stackoverflow.com/questions/42556835/show-values-on-top-of-bars-in-chart-js/46803027
+		Chart.plugins.register({
+		  afterDraw: function(chartInstance) {
+		    if (chartInstance.config.options.showDatapoints) {
+		      var helpers = Chart.helpers;
+		      var ctx = chartInstance.chart.ctx;
+		      var fontColor = helpers.getValueOrDefault(chartInstance.config.options.showDatapoints.fontColor, chartInstance.config.options.defaultFontColor);
+
+		      // render the value of the chart above the bar
+		      ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+		      ctx.textAlign = 'center';
+		      ctx.textBaseline = 'bottom';
+		      ctx.fillStyle = fontColor;
+
+		      chartInstance.data.datasets.forEach(function (dataset) {
+		        for (var i = 0; i < dataset.data.length; i++) {
+		          var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+		          var scaleMax = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._yScale.maxHeight;
+		          var yPos = (scaleMax - model.y) / scaleMax >= 0.93 ? model.y + 20 : model.y - 5;
+		          ctx.fillText(dataset.data[i], model.x, yPos);
+		        }
+		      });
+		    }
+		  }
+		});
+
+		var MONTHS = ['0', '5', '10', '15', '20', '25', '30', '35', '40', '45', '50'];
+
+		var color = Chart.helpers.color;
+
+		var barChartData = {
+			labels: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'],
+			datasets: [
+			{
+				label: 'YOLOv2',
+				backgroundColor: color(window.chartColors.purple).alpha(0.5).rgbString(),
+				borderColor: window.chartColors.purple,
+				borderWidth: 1,
+				data: [-20, -20, -20, -20, -20, -20, 45, -20, -20, -20, -20]
+			}, 
+			{
+				label: 'Faster R-CNN',
+				backgroundColor: color(window.chartColors.red).alpha(0.9).rgbString(),
+				borderColor: window.chartColors.black,
+				borderWidth: 1,
+				data: [-20, -20, -20, -20, -20, -20, -20, 7, -20, -20, -20]
+			}, 
+			{
+				label: 'Fast R-CNN',
+				backgroundColor: color(window.chartColors.green).alpha(0.9).rgbString(),
+				borderColor: window.chartColors.black,
+				borderWidth: 1,
+				data: [-20, -20, -20, -20, -20, -20, -20, 1, -20, -20, -20]
+			}, 
+			{
+				label: 'R-CNN',
+				backgroundColor: color(window.chartColors.blue).alpha(0.9).rgbString(),
+				borderColor: window.chartColors.black,
+				borderWidth: 1,
+				data: [-20, -20, -20, -20, -20, 1, -20, -20, -20, -20, -20]
+			}, 
+			{
+				label: 'DPM',
+				backgroundColor: color(window.chartColors.yellow).alpha(0.9).rgbString(),
+				borderColor: window.chartColors.black,
+				borderWidth: 1,
+				data: [-20, -20, -20, 1, -20, -20, -20, -20, -20, -20, -20]
+			}
+
+			]
+		};
+
+		window.onload = function() {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			
+			window.myBar = new Chart(ctx, {
+				type: 'bar',
+				data: barChartData,
+				options: {
+					showDatapoints: true,
+					responsive: true,
+					legend: {
+						position: 'top',
+					},
+					title: {
+						display: true,
+						text: '物件偵測演算法'
+					},
+					/* https://stackoverflow.com/questions/28990708/chartjs-how-to-set-max-and-min-value-for-y-axis */
+		            scales: {
+						xAxes: [{
+							display: true,
+							scaleLabel: {
+								display: true,
+								labelString: 'mAP'
+							}
+						}],
+		                yAxes: [{
+		                    ticks: {
+		                        min: 0,
+		                        max: 50,
+		                        beginAtZero: true
+		                    },
+							scaleLabel: {
+								display: true,
+								labelString: 'FPS'
+							}
+		                }]
+		            }
+				}
+			});
+		};
+
+	</script>
+</body>
+
+</html>
