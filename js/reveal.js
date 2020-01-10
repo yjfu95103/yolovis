@@ -36,7 +36,7 @@ var Reveal = (function(){
 			progress: true,
 
 			// Display the page number of the current slide
-			slideNumber: false,
+			slideNumber: true,
 
 			// Push each slide change to the browser history
 			history: false,
@@ -1871,13 +1871,15 @@ var Reveal = (function(){
 		// Update slide number if enabled
 		if( config.slideNumber && dom.slideNumber) {
 
+			var horizontalSlides = dom.wrapper.querySelectorAll(HORIZONTAL_SLIDES_SELECTOR);
+			var horizontalSlidesNumber = horizontalSlides.length
 			// Display the number of the page using 'indexh - indexv' format
 			var indexString = indexh;
-			if( indexv > 0 ) {
+			if( indexv >= 0 ) {
 				indexString += ' - ' + indexv;
 			}
 
-			dom.slideNumber.innerHTML = indexString;
+			dom.slideNumber.innerHTML = indexString+'-'+horizontalSlidesNumber;
 		}
 
 	}
