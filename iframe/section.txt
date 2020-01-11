@@ -1,0 +1,11 @@
+		
+<section>
+	<iframe style="white-space: nowrap" src="box1.html" width="120" height="200" scrolling="No" frameborder="100"></iframe>	
+	<iframe style="white-space: nowrap" src="box2.html" width="120" height="200" scrolling="No" frameborder="100"></iframe>	
+	<iframe style="white-space: nowrap" src="box3.html" width="120" height="200" scrolling="No" frameborder="100"></iframe>	
+	<iframe style="white-space: nowrap" src="box4.html" width="120" height="200" scrolling="No" frameborder="100"></iframe>	
+	<iframe style="white-space: nowrap" src="box5.html" width="120" height="200" scrolling="No" frameborder="100"></iframe>	
+	<iframe style="white-space: nowrap" src="box6.html" width="120" height="200" scrolling="No" frameborder="100"></iframe>	
+	<iframe style="white-space: nowrap" src="box7.html" width="120" height="200" scrolling="No" frameborder="100"></iframe>	
+
+</section>

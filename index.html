@@ -126,7 +126,7 @@
 				<p style="font-size:80%;">請按影片左下方，撥放紐</p>
 			</div>
 			<div>
-				<video style="position:absolute; top:25%; left:18%; border:0px; width:70%" loop="false" muted="true" controls>
+				<video data-autoplay style="position:absolute; top:25%; left:18%; border:0px; width:70%" loop="false" muted="true" controls>
 					<source src="video/yolo.mp4" type="video/mp4">	
 				</video>
 			</div>
@@ -201,7 +201,7 @@
 				<text x="840" y="40" font-family="sans-serif" font-size="15px" fill="black">YOLOv1(2016)</text>
 				<text x="850" y="20" font-family="sans-serif" font-size="15px" fill="black">YOLOv2(2017)</text>
 			</svg>
-        <iframe src="time.html" width="200%" scrolling="No" frameborder="100"></iframe>
+        <iframe src="iframe/time.html" width="200%" scrolling="No" frameborder="100"></iframe>
 		</section>
 		<!-- time -->
 
@@ -707,7 +707,16 @@
 				<div class="div-2-left">
 					<p style="font-size:80%;">比較圖</p>
 				</div>
-            <img style="position: absolute; top: 50%; left: 15%;" width="80%" class="plain" src="images/history/compare.png">
+				<br><br><br>
+				<iframe style="white-space: nowrap; position: absolute; top: 30%; left: 15%;" src="iframe/box1.html" width="20%" height="32%" scrolling="No" frameborder="100"></iframe>	
+				<iframe style="white-space: nowrap; position: absolute; top: 30%; left: 35%;" src="iframe/box2.html" width="20%" height="32%" scrolling="No" frameborder="100"></iframe>	
+				<iframe style="white-space: nowrap; position: absolute; top: 30%; left: 55%;" src="iframe/box3.html" width="20%" height="32%" scrolling="No" frameborder="100"></iframe>	
+				<iframe style="white-space: nowrap; position: absolute; top: 30%; left: 75%;" src="iframe/box4.html" width="20%" height="32%" scrolling="No" frameborder="100"></iframe>	
+				<br><br><br>
+				<iframe style="white-space: nowrap; position: absolute; top: 60%; left: 25%;" src="iframe/box5.html" width="20%" height="32%" scrolling="No" frameborder="100"></iframe>	
+				<iframe style="white-space: nowrap; position: absolute; top: 60%; left: 45%;" src="iframe/box6.html" width="20%" height="32%" scrolling="No" frameborder="100"></iframe>	
+				<iframe style="white-space: nowrap; position: absolute; top: 60%; left: 65%;" src="iframe/box7.html" width="20%" height="32%" scrolling="No" frameborder="100"></iframe>	
+            <!-- <img style="position: absolute; top: 50%; left: 15%;" width="80%" class="plain" src="images/history/compare.png"> -->
 		</section>
 	</section>
 
@@ -841,8 +850,8 @@
 				<p style="font-size:80%;">數字9在視覺上可以想像成<br><b>數字1</b>加上<b>數字0</b>的合併</p>	
 			</div>
 			<img style="position:absolute;top:35%;left:15%;width:22%;" src="images/NN/9.PNG">
-			<img  style="position:absolute;top:35%;left:45%;width:22%;" src="images/NN/0.PNG">
-			<img  style="position:absolute;top:35%;left:75%;width:22%;" src="images/NN/1.PNG">
+			<img style="position:absolute;top:35%;left:45%;width:22%;" src="images/NN/0.PNG">
+			<img style="position:absolute;top:35%;left:75%;width:22%;" src="images/NN/1.PNG">
 			<br>
 			<div class="div-2-right">
 				<p data-audio-src="audio/skill/skill_女_8.mp3" class="fragment" style="font-size:75%;">沒錯!你真聰明</p>
@@ -856,10 +865,11 @@
 				<p style="font-size:80%;">上述運作流程是在隱藏層處裡的嗎?</p>
 			</div>
 			<img style="position:absolute;top:25%;left:37%;width:35%;" src="images/NN/nn-2.PNG">
-			<img class="fragment" style="position:absolute;top:25%;left:37%;width:35%;" src="images/NN/nn-3.PNG">
+			<img class="fragment" data-audio-src="audio/null.mp3" style="position:absolute;top:25%;left:37%;width:35%;" src="images/NN/nn-3.PNG">
 			<br>
 			<div class="div-2-right">
-				<p data-audio-src="audio/skill/skill_女_9.mp3" class="fragment" style="font-size:75%;">對阿!在隱藏層從中找尋細節，到最後一層就可以辨識出它是哪個數字。
+				<p data-audio-src="audio/skill/skill_女_9.mp3" class="fragment" style="font-size:75%;">對阿! 在隱藏層從中找尋細節，<br>
+					到最後一層就可以辨識出它是哪個數字。
 				</p>
 			</div>
 			<img class="img-right plain" src="images/girl.svg">
@@ -872,7 +882,7 @@
 				<p style="font-size:70%;">可以從中找到很多的細節，像是這樣</p>	
 			</div><br>
 			<img style="position: absolute; top: 30%; left: 25%; width:50%" src="images/NN/lion.PNG">
-			<img  style="position: absolute; top: 30%; left: 25%;width:50%" src="images/NN/lion_filter.PNG">
+			<img class="fragment" data-audio-src="audio/null.mp3" style="position: absolute; top: 30%; left: 25%;width:50%" src="images/NN/lion_filter.PNG">
 			<div class="div-2-right">
 				<p data-audio-src="audio/skill/skill_女_10.mp3" class="fragment" style="font-size:70%;">哇~你也懂得舉一反三啊~真優秀!</p>
 			</div>
@@ -1100,7 +1110,8 @@
 			<br><br>
 			<div class="div-1-right">
 				<p data-audio-src="audio/skill/skill_女_28.mp3" class="fragment" style="font-size:70%;">步驟一 透過CNN取得feature map</p>
-				<p data-audio-src="audio/skill/skill_女_28_1.mp3" class="fragment" style="font-size:70%;">步驟二 利用RPN網路將feature map放入全連接層運算，輸出較低維向量的特徵</p>
+				<p data-audio-src="audio/skill/skill_女_28_1.mp3" class="fragment" style="font-size:70%;">步驟二 利用RPN網路將feature map放入全連接層運算，<br>
+					輸出較低維向量的特徵</p>
 				<p data-audio-src="audio/skill/skill_女_28_2.mp3" class="fragment" style="font-size:70%;">步驟三 將低維向量輸出至兩層全連接層，合併後進行分類</p>
 			</div>
 			<img class="img-right plain" src="images/girl.svg">
@@ -1523,6 +1534,21 @@
 		<section data-audio-src="audio/null.mp3">
 			<h2>&ensp;比較&特色&ensp;</h2>
 		</section>
+<!-- 
+		<section data-audio-src="audio/compare/compare_男_0.mp3">
+			<img class="img-left plain" src="images/boy.svg">
+			<div class="div-1-left">
+				<br>
+				<p style="font-size:80%;">右右~ 有 YOLO 跟其他方法比較圖</p>
+				<br>
+			</div>
+			<div class="div-1-right">
+				<br>
+				<p data-audio-src="audio/compare/compare_女_0.mp3" class="fragment" style="font-size:80%;">有的，請看下一頁!</p>
+				<br>
+			</div>
+			<img class="img-right plain" src="images/girl.svg">	
+		</section> -->
 		
 		<section data-audio-src="audio/null.mp3">
 			<table>
@@ -1661,7 +1687,7 @@
 				<p data-audio-src="audio/compare/compare_女_6.mp3" class="fragment" style="font-size:80%;">在FPS大於20幀時，<br>
 					是一般人類眼睛看到順暢的畫面，<br>
 					而且只有YOLO在FPS大於20幀，<br>
-					>所以目前方法僅 YOLO 可以達成即時辨識並呈現</p>
+					所以目前方法僅 YOLO 可以達成即時辨識並呈現</p>
 				<br>
 			</div>
 			<img class="img-right plain" src="images/girl.svg">
