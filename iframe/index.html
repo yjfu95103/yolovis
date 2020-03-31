@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script src="lib/d3.v4.min.js"></script>
+  <script src="lib/d3.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <style>
+    body { 
+      margin:0;
+      position:fixed;
+      top:0;right:0;bottom:0;left:0;
+    	font-family: Helvetica, Arial;
+      /* background-color: blanchedalmond; */
+      /* background-color: #0b161c; */
+   	}
+    #container {
+      position: relative;
+      z-index: 100;
+    }
+    /* *{
+      color:  white;
+    } */
+    .sticky_right { 
+      position: absolute; 
+      top: 0; 
+      right: 0; 
+      width: 50%; 
+      z-index: 50;
+    }   
+    .sticky_left { 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 50%; 
+      z-index: 50;
+    }  
+    /* //  */
+    .panel {
+      width: 100%;
+      padding-left: 20px;
+      padding-top: 15vh;
+      padding-bottom: 15vh;
+    }
+    .h2{
+      padding-left: 20px;
+    } 
+    .panel p {
+      padding-right: 50%;
+      font-size: 20px;
+    }  
+    .panel:first-child {
+      padding-top: 35vh;
+    }
+    .panel:last-child {
+      padding-bottom: 45vh;
+    }
+    /* rigth */
+    .panel_right {
+      width: 100%;
+      padding-left: 20px;
+      padding-top: 15vh;
+      padding-bottom: 15vh;
+    }    
+    .panel_right p {
+      padding-left: 50%;
+      font-size: 20px;
+    }   
+    .panel_right h2{
+      padding-left: 50%;
+    }
+    /* // */
+    .panel2 {
+      width: 100%;
+      padding-left: 20px;
+      padding-top: 5vh;
+      padding-bottom: 5vh;
+    }
+    .panel2 p {
+      padding-right: 50%;
+      font-size: 20px;
+    }
+    .cube:hover {
+      fill: #6beaf32f;
+      opacity: 0.6;
+    }
+    
+    #introduction {
+      display: none;
+    }
+    a:hover + #introduction {
+      display: block;
+    }
+    
+  </style>
+</head>
+
+<body>
+<!-- 
+  <div class="sticky_right" id="sticky2">    
+  </div>
+
+  <div class="sticky_right" id="sticky3">    
+  </div>
+
+  <div class="sticky_left" id="sticky4">    
+  </div>
+
+  <div class="sticky_left" id="sticky5">    
+  </div>
+
+  <div class="sticky_left" id="sticky6">    
+  </div>
+
+  <div class="sticky_left" id="sticky7">    
+  </div>
+
+  <div class="sticky_left" id="sticky8">    
+  </div>
+
+  <div class="sticky_left" id="sticky9">    
+  </div> -->
+  
+
+  <div id="container" style="height: 100vh; overflow: scroll">
+    <div id="content">      
+      <!-- <div class="panel">
+        <h1>前言</h1>				
+        <p>在影像處理的方面，<strong>物體辨識</strong>已經被大家廣泛的應用於生活之中，</p>
+        <p>比如說車牌辨識和人臉辨識等，利用深度學習來做辨識更是現在最熱門議題，</p>
+        <p>然而在這之中，深度學習有許多方式可以達成，大家最為所知道就是卷積神經網路(CNN)，</p>
+        <p>經過架構和參數的調整及優化都有不錯數據表現。</p>
+      </div>      
+
+      <div class="panel">
+        <h2>YOLO</h2>
+        <p>在2016年，出現<strong>YOU ONLY LOOK ONCE</strong>(YOLO)演算法，</p>
+        <p>這在物件辨識是一個巨大突破，跨時代思維打破傳統CNN的架構，</p>
+        <p>使它在數據上有亮眼的成績。此外，它除了保持辨識在一定的準確度，</p>
+        <p>在FPS有60、70針的畫面呈現，以此達成<strong>即時物件辨識</strong>。</p>        
+      </div>
+
+      <div class="panel">
+        <h2>YOLO 作者</h2>
+        <p><strong>Joseph Redmon</strong>，他是華盛頓大學計算機科學博士生</p>
+        <p>是基於CNN提出了一種精確的、即時性的方法來實現的物件辨識</p>        
+      </div> -->
+
+      <!-- <div class="panel" id="darknet"> -->
+      <div>
+        <h2>darknet-19</h2>
+        <p title='滑鼠靠近'>YOLO V2框架圖</p>
+        <a id='' style="color: #f01155;"><strong>點擊我</strong></a>        
+        <div class="tip" id="introduction">
+          <p>darknet-19的設計主要的參考依據就是VGG-16，</p>
+          <p>因為VGG-16網路框架有很好的架設，也非常有效，</p>
+          <p>但是最大的缺點就是最後的兩層全連階層使得運算的參數量過高。</p>
+          <p>所以darknet-19的設計又參考了Googlenet的設計，</p>
+          <p>運用1×1的卷積和全域平均池化(Max pooling)，來取代掉原本分類層的設計，</p>
+          <p>讓參數的使用量只需原本VGG-16的0.28倍。</p>
+        </div>
+        <a style="color: blue;"><strong>在下圖中移動滑鼠</strong></a> 
+        <button id='reset' style="color: black;">Reset</button>
+        <button id='change' style="color: black;">Change</button><br>
+        寬度 <input type = "range" min = "10" max = "90"  value = "50" id = "recwidth" ><br>
+        <svg id="darknet_19" width="100%" height="500px"></svg>
+          
+      </div>    
+      
+      <!-- <div class="panel_right">
+        <h2> Convolution </h2>
+        <p> Let&rsquo;s&nbsp;say you had to determine whether a home is in <strong style="color:rgb(65, 153, 43);"> San Francisco</strong> or in <strong style="color:rgb(16, 70, 131);">New York</strong>. In machine learning  terms, categorizing data points is a <strong>classification</strong> task. </p>
+        <p> Since San Francisco is relatively hilly, the elevation of a home may be a good way to distinguish the two cities. </p>
+        <p> Based on the home-elevation data to the right, you could argue that a home above 73 meters should be <strong> classified</strong> as one in San Francisco. </p>
+      </div>
+
+      <div class="panel_right">
+        <h2> First, some intuition </h2>
+				<p> Let&rsquo;s&nbsp;say you had to determine whether a home is in <strong style="color:rgb(65, 153, 43);"> San Francisco</strong> or in <strong style="color:rgb(16, 70, 131);">New York</strong>. In machine learning  terms, categorizing data points is a <strong>classification</strong> task. </p>
+				<p> Since San Francisco is relatively hilly, the elevation of a home may be a good way to distinguish the two cities. </p>
+				<p> Based on the home-elevation data to the right, you could argue that a home above 73 meters should be <strong> classified</strong> as one in San Francisco. </p>
+      </div>
+      
+      <div class="panel_right">
+        <h2> Adding nuance </h2>
+				<p> Adding another <strong>dimension</strong> allows for more nuance. For example, New York apartments can be extremely expensive per square foot. </p>
+				<p> So visualizing elevation <em>and</em> price per square foot in a <strong>scatterplot</strong> helps us distinguish lower-elevation homes. </p>
+				<p> The data suggests that, among homes at or below 73 meters, those that cost more than $19,116.7 per square meter are in New York City. </p>
+				<p> Dimensions in a data set are called <strong>features</strong>, <strong>predictors</strong>, or <strong>variables</strong>. <span class="footnote-anchor"></span></p>
+      </div>
+      
+      <div class="panel_right">
+        <h2> Drawing boundaries </h2>
+				<p> You can visualize your elevation (>73 m) and price per square foot (>$19,116.7) observations as the boundaries of regions in your scatterplot. Homes plotted in the green and blue regions would be in San Francisco and New York, respectively. </p>
+				<p> Identifying boundaries in data using math is the essence of statistical learning. </p>
+				<p> Of course, you&rsquo;ll need additional information to distinguish homes with lower elevations <em>and</em> lower per-square-foot prices. </p>
+      </div>
+      <div class="panel_right">
+        <h2> Drawing boundaries </h2>
+				<p> You can visualize your elevation (>73 m) and price per square foot (>$19,116.7) observations as the boundaries of regions in your scatterplot. Homes plotted in the green and blue regions would be in San Francisco and New York, respectively. </p>
+				<p> Identifying boundaries in data using math is the essence of statistical learning. </p>
+				<p> Of course, you&rsquo;ll need additional information to distinguish homes with lower elevations <em>and</em> lower per-square-foot prices. </p>
+      </div>
+      <div class="panel_right">
+        <h2> Drawing boundaries </h2>
+				<p> You can visualize your elevation (>73 m) and price per square foot (>$19,116.7) observations as the boundaries of regions in your scatterplot. Homes plotted in the green and blue regions would be in San Francisco and New York, respectively. </p>
+				<p> Identifying boundaries in data using math is the essence of statistical learning. </p>
+				<p> Of course, you&rsquo;ll need additional information to distinguish homes with lower elevations <em>and</em> lower per-square-foot prices. </p>
+      </div>
+      <div class="panel_right">
+        <h2> Drawing boundaries </h2>
+				<p> You can visualize your elevation (>73 m) and price per square foot (>$19,116.7) observations as the boundaries of regions in your scatterplot. Homes plotted in the green and blue regions would be in San Francisco and New York, respectively. </p>
+				<p> Identifying boundaries in data using math is the essence of statistical learning. </p>
+				<p> Of course, you&rsquo;ll need additional information to distinguish homes with lower elevations <em>and</em> lower per-square-foot prices. </p>
+      </div>
+      
+      <div class="panel_right">
+        <p> The dataset we are using to create the model has 7 different dimensions. Creating a model is also known as <strong>training</strong> a model. </p>
+				<p> On the right, we are visualizing the variables in a <strong>scatterplot matrix</strong> to show the relationships between each pair of dimensions. </p>
+				<p> There are clearly patterns in the data, but the boundaries for delineating them are not obvious. </p>
+				<pre>container
+            .on("scroll.scroller", function() {
+              newScrollTop = container.node().scrollTop
+            });      
+        </pre>
+      </div>
+
+      <div class="panel">
+        <h2> And now, machine learning </h2>
+				<p> Finding patterns in data is where machine learning comes in. Machine learning methods use statistical learning to identify boundaries. </p>
+				<p> One example of a machine learning method is a <strong>decision tree</strong>. Decision trees look at one variable at a time and are a reasonably accessible (though rudimentary) machine learning method. </p>
+				<pre>var render = function() {
+              // Don't re-render if scroll didn't change
+              if (scrollTop !== newScrollTop) {
+                // Graphics Code Goes Here
+              }
+              window.requestAnimationFrame(render)
+            }
+
+            window.requestAnimationFrame(render) 
+        </pre>
+        <p>That's the core of it. Although there's a couple other minor tricks that's worth pointing out.</p>
+      </div>
+
+      <div class="panel">
+        <p>1. <strong>Pacing the Panels</strong>: These panels that contains the text are spaced according to the height of the window, such that just one paragraph is visible at a time.</p> 
+        <p>To achieve this in a responsive way, I use <code>vh</code> units to set the top and bottom padding on each panel. That way, the paragraphs are spaced correctly no matter the size of the screen.</p>
+      </div>
+      <div class="panel">
+        <p>2. <strong>Responsive Timing</strong>: The clock on the right hits 12 just as you finish scrolling, no matter what the screen size is. Getting the animation in sync with scroll requires using the dimensions of container and the screen as input in the animation scaling function.</p>
+        <p>The way this is achieved is through a callback on the <code>window.resize</code> handler. It reads in the relevant dimensions and feeds it back into the <code>.domain</code> of the <code>d3.scale</code> function.</p>
+      </div>
+    </div> -->
+  </div>
+
+ 
+  <script>
+    var origin = [130, 180], scale = 18, cubesData = [], alpha = 0, beta = 0, startAngle = Math.PI/6;
+    var svg    = d3.select('#darknet_19').call(d3.drag().on('drag', dragged).on('start', dragStart).on('end', dragEnd)).append('g');
+    // var svg    = d3.select('svg');
+    // d3.select('#darknet_19').append('g')
+    //     .attr('transform', "matrix("+[0.6,0,0,0.6,20,35]+")")
+    //     .attr('x', 500)
+    //     .attr('y', 500)
+    //     .attr('width', 5)
+    //     .attr('height', 5)
+    //     .append('svg:image')
+    //     .attr('xlink:href', 'image/dog.png')
+    //     .style("opacity", 0.8);
+
+    var color  = d3.scaleOrdinal(d3.schemeCategory20c);
+    var cubesGroup = svg.append('g').attr('class', 'cubes');
+    var mx, my, mouseX, mouseY;
+
+    // d3.select('#darknet_19').append('g')
+    //     .attr('transform', "matrix("+[0.4,0,0,0.5,1420,35]+")")
+    //     .attr('x', 500)
+    //     .attr('y', 500)
+    //     .attr('width', 5)
+    //     .attr('height', 5)
+    //     .append('svg:image')
+    //     .attr('xlink:href', 'image/predictions.jpg')
+    //     .style("opacity", 0.8);      
+          
+
+    var cubes3D = d3._3d()
+        .shape('CUBE')
+        .x(function(d){ return d.x; })
+        .y(function(d){ return d.y; })
+        .z(function(d){ return d.z; })
+        .rotateX( -.2*startAngle)
+        .rotateY( 3.0*startAngle)
+        .rotateZ( 0)
+        .origin(origin)
+        .scale(scale);    
+    // -------------------------------------------------------------------------
+    var array_text_origin = ['416*416','208*208','208*208', '104*104','104*104','104*104','104*104',
+                          '52*52','52*52','52*52','52*52','26*26','26*26','26*26','26*26','26*26','26*26',
+                          '13*13','13*13','13*13','13*13','13*13','13*13','13*13','13*13','26*26',
+                          '13*13','13*13','13*13'
+                          ];
+    var array_r_origin = [-16,-8,-8,-4,-4,-4,-4,
+                    -2,-2,-2,-2,-1,-1,-1,-1,-1,-1,
+                    -0.5,-0.5,-0.5,-0.5,-0.5,-0.5,-0.5,-0.5,-1,
+                    -0.5,-0.5,-0.5];  //rect width
+    var array_z_origin = [0.1,0.1,0.2,0.2,0.4,
+                    0.2,0.4,0.4,0.8,0.4,0.8,0.8,1.6,0.8,1.6,0.8,1.6,1.6,
+                    3.2,1.6,3.2,1.6,3.2,3.2,3.2,0.2,0.8,
+                    3.2,3.2,1.5];  //rect z-index  
+    var array_text_simple = ['416*416*32','208*208*64','104*104*128','52*52*256','26*26*512','13*13*1024','13*13*425'];
+    var array_r_simple = [-16,-8,-4,-2,-1,-0.5,-0.5];  //rect width
+    var array_z_simple = [0.1,1.5,1.8,3,5,8,5];  //rect z-index      
+    // var array_text,array_r,array_z = []; 
+    var change_type = false;
+    var array_text = array_text_origin;
+    var array_r = array_r_origin;
+    var array_z = array_z_origin;
+    // ---- slider bar ----------------------------------------------------------
+    var svg_width = 960
+    var svg_height = 500
+    var padding = 5   
+
+    d3.select("#recwidth").on("input", function() {
+      if(this.value>=50){
+        init((this.value-40)/40,null);
+      }else{
+        init(-(40-this.value)/40,null);
+      }
+    });
+    
+    // --------------------------------------------------------------------------
+    var WIDTH = window.innerWidth / 2;
+    var HEIGHT = window.innerHeight;
+    
+    var translate = 'translate(' + (WIDTH /5) + ',' + (0) + ')'
+
+    // svg2 yolo icon
+    var svg2 = d3.select("#sticky2")
+              .append("svg")
+              .attr('width', WIDTH)
+              .attr('height', HEIGHT);
+    
+    var svg_yolo = svg2.append('g')
+    	  .attr('transform', translate)
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', 20)
+        .attr('height', 30)
+        .append('svg:image')
+        .attr('xlink:href', 'image/yolo.png')
+        .style("opacity", 0);
+    //------------------------------------------------------------------    
+    // svg3 author
+    var svg3 = d3.select("#sticky3")
+              .append("svg")
+              .attr('width', WIDTH)
+              .attr('height', HEIGHT);
+
+    var svg_author = svg3.append('g')
+    	  .attr('transform', translate)
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', 20)
+        .attr('height', 30)
+        .append('svg:image')
+        .attr('xlink:href', 'image/author.jpg')
+        .style("opacity", 0);
+    //------------------------------------------------------------------    
+    // svg4 dog
+    var svg4 = d3.select("#sticky4")
+              .append("svg")
+              .attr('width', WIDTH)
+              .attr('height', HEIGHT);
+
+    var svg_dog = svg4.append('g')
+    	  .attr('transform', translate)
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', 20)
+        .attr('height', 20)
+        .append('svg:image')
+        .attr('xlink:href', 'image/dog.png')
+        .style("opacity", 0);
+
+    //------------------------------------------------------------------    
+    // svg dog
+    // var dog = d3.select("#dog")
+    //           .append("svg")
+    //           .attr('width', WIDTH)
+    //           .attr('height', HEIGHT);
+
+    // var dog2 = dog.append('g')
+    // 	  .attr('transform', translate)
+    //     .attr('x', 0)
+    //     .attr('y', 0)
+    //     .attr('width', 20)
+    //     .attr('height', 20)
+    //     .append('svg:image')
+    //     .attr('xlink:href', 'image/dog.png')
+    //     .style("opacity", 0);
+
+    //------------------------------------------------------------------    
+    // svg5 rect table
+    var svg5 = d3.select("#sticky5")
+              .append("svg")
+              .attr('width', WIDTH)
+              .attr('height', HEIGHT);
+
+    var svg_table = svg5.append('g')
+    	  .attr('transform', translate)             
+
+    for(var i=0;i<13;i++){
+      for(var j=0;j<13;j++){
+        svg_table.append('rect')
+        .attr('x', i*34.8)
+        .attr('y', j*34.8)
+        .attr('width', 34.8)
+        .attr('height', 34.8);
+      }
+    }
+    svg_table.attr('stroke', '#ffffff')
+        .attr('fill', 'none')
+        .style("opacity", 0);        
+    //------------------------------------------------------------------ 
+    // svg6 box
+    var x=0,y=0;
+    var svg6 = d3.select("#sticky6")
+              .append("svg")
+              .attr('width', WIDTH)
+              .attr('height', HEIGHT);
+
+    var svg_box = svg6.append('g')
+    	  .attr('transform', translate) 
+        .append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', 34.8)
+        .attr('height', 34.8)
+        .attr('stroke', '#ff0000')
+        .attr('fill', 'none')
+        .attr("stroke-width", 3)
+        .style("opacity", 0);
+    //------------------------------------------------------------------
+    // svg7 anchor box 1
+    var svg7 = d3.select("#sticky7")
+              .append("svg")
+              .attr('width', WIDTH)
+              .attr('height', HEIGHT);
+
+    var svg_anchorbox = svg7.append('g')
+    	  .attr('transform', translate) 
+        .append('rect')
+        .attr('x', 0)
+        .attr('y', -120)
+        .attr('width', 60)
+        .attr('height', 50)
+        .attr('stroke', '#0000ff')
+        .attr('fill', 'none')
+        .attr("stroke-width", 3)
+        .style("opacity", 0);
+    //------------------------------------------------------------------    
+    // svg8 dog for Convolution
+    var svg8 = d3.select("#sticky8")
+              .append("svg")
+              .attr('width', WIDTH)
+              .attr('height', HEIGHT);
+
+    var svg_dog_conv = svg8.append('g')
+    	  .attr('transform', translate)
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', 20)
+        .attr('height', 20)
+        .append('svg:image')
+        .attr('xlink:href', 'image/dog.png')
+        .style("opacity", 0);
+    //------------------------------------------------------------------    
+    // svg9 rect table
+    var svg9 = d3.select("#sticky9")
+              .append("svg")
+              .attr('width', WIDTH)
+              .attr('height', HEIGHT);
+
+    var svg_table_conv = svg9.append('g')
+    	  .attr('transform', translate)             
+
+    for(var i=0;i<13;i++){
+      for(var j=0;j<13;j++){
+        svg_table_conv.append('rect')
+        .attr('x', i*15)
+        .attr('y', j*15)
+        .attr('width', 15)
+        .attr('height', 15);
+      }
+    }
+    svg_table_conv.attr('stroke', '#f00f55')
+        .attr('fill', 'none')
+        .style("opacity", 0);        
+    //------------------------------------------------------------------ 
+    //------------------------------------------------------------------ 
+    //------------------------------------------------------------------  
+ 
+    var currentScrollTop = d3.select('#currentScrollTop')
+    var body = d3.select('body').node()
+    var container = d3.select('#container')
+    var content = d3.select('#content')
+    
+    var SCROLL_LENGTH = content.node().getBoundingClientRect().height - HEIGHT   
+    var scrollTop = 0
+    var newScrollTop = 0
+    
+		container
+  		.on("scroll.scroller", function() {
+      	newScrollTop = container.node().scrollTop
+	    });
+
+    var setDimensions = function() {
+      WIDTH = window.innerWidth / 2
+			HEIGHT = window.innerHeight
+      SCROLL_LENGTH = content.node().getBoundingClientRect().height - HEIGHT;
+    }
+    //------ render function for mouse sliding ---------------------------------
+    var render = function() {
+      
+      if (scrollTop !== newScrollTop) {
+        scrollTop = newScrollTop; 
+        console.log("移動:",scrollTop);        
+
+        // translate = 'translate(' + (WIDTH / 4) + ',' + (scrollTop / 8) + ')'
+        translate2 = 'translate(' + 0 + ',' + (scrollTop / 8) + ')'
+        translate3 = 'translate(' + (WIDTH / 5) + ',' + (scrollTop / 8) + ')'
+        translate4 = 'translate(' + (WIDTH / 5) + ',' + HEIGHT + ')'
+        translate_anchor = 'translate(' + (104) + ',' + (607) + ')'
+
+        // ---- rotate dog image-----------------------------------------------
+        dx = 0, dy = 0 + 60 * 3* Math.sin(45 * Math.PI/180);
+        a = 1, b = 0, c = 0, d = 1;
+        b = -Math.sin(30 * Math.PI/180);
+        b2 = -Math.sin(60 * Math.PI/180);
+        matrix = [a, b, c, d, dx, dy];
+        // svg_dog_conv.attr('transform', "matrix("+[1, -Math.sin(30 * Math.PI/180), 0, 1, 0, 60 * 3* Math.sin(45 * Math.PI/180)]+")" ); 
+        // svg_dog_conv.attr('width', WIDTH/3).attr('height', HEIGHT);
+        // svg_table_conv.attr('transform', "matrix("+[1.5, b2, 0, 1.5, 193, 308+dy]+")" );
+        // svg_table_conv.attr('width', WIDTH/3).attr('height', HEIGHT);
+           
+        svg_yolo.attr('transform', translate2); 
+        svg_author.attr('transform', translate2); 
+        svg_dog.attr('transform', translate2);         
+        svg_table.attr('transform', translate3);
+        svg_box.attr('transform', translate2);
+        svg_anchorbox.attr('transform', translate2);
+        
+        //-------------------------------
+        if(scrollTop>600 && scrollTop<1000){
+          var index = 1-Math.abs(scrollTop-800)/200;
+          if(index>0.5){index=1;}
+          svg_yolo.style("opacity", index);
+        }else{
+          svg_yolo.style("opacity", 0);
+        }
+        //-------------------------------
+        if(scrollTop>1000 && scrollTop<1400){
+          var index = 1-Math.abs(scrollTop-1200)/200;
+          if(index>0.5){index2=1;}
+          svg_author.style("opacity", index);
+        }else{
+          svg_author.style("opacity", 0);
+        }
+        //-------------------------------
+        if(scrollTop>2000 && scrollTop<3200){
+          var index = 1-Math.abs(scrollTop-2600)/600;
+          if(index>0.5){index=1;}
+          svg_dog.style("opacity", index);        
+        }else{
+          svg_dog.style("opacity", 0);
+        }
+        //-------------------------------
+        if(scrollTop>2000 && scrollTop<3200){          
+          var index = 1-Math.abs(scrollTop-2600)/600;
+          if(index>0.3){index=1;}
+          svg_table.style("opacity", index);                         
+        }else{
+          svg_table.style("opacity", 0);          
+        }
+        //-------------------------------
+        if(scrollTop>2200 && scrollTop<3000 ){            
+          i=parseInt((scrollTop-2200)/4)%13; 
+          j=parseInt((scrollTop-2200)/4/13);
+
+          if(i>=0 && i<13 && j>=0 && j<13){
+            // console.log("===",i,j,'===>',(i*34.8),(scrollTop/8+j*34.8));
+            translate_box = 'translate(' + (i*34.8) + ',' + (scrollTop/8+j*34.8) + ')'  
+            svg_box.attr('transform', translate_box)
+                    .style("opacity", 1);;
+          }else{
+            svg_box.style("opacity", 0);
+          }           
+        }else{
+          svg_box.style("opacity", 0);
+        }       
+        //-------------------------------  
+        // if(scrollTop>3000 && scrollTop<3400){          
+        //   var index = 1-Math.abs(scrollTop-3200)/200;
+        //   if(index>0.3){index=1;}
+        //   svg_dog_conv.style("opacity", index);                         
+        // }else{
+        //   svg_dog_conv.style("opacity", 0);          
+        // }
+        //-------------------------------  
+        if(scrollTop>3000 && scrollTop<3400){          
+          var index = 1-Math.abs(scrollTop-3200)/200;
+          if(index>0.3){index=1;}
+          svg_table_conv.style("opacity", index);                         
+        }else{
+          svg_table_conv.style("opacity", 0);          
+        }
+        //-------------------------------
+        // if(scrollTop>3300 && scrollTop<3900){          
+        //   var index = 1-Math.abs(scrollTop-3600)/300;
+        //   if(index>0.3){index=1;}
+        //   svg_anchorbox.style("opacity", 1);
+        //   svg_anchorbox.attr('transform', translate_anchor);              
+        // }else{
+        //   svg_anchorbox.style("opacity", 0);          
+        // }
+  
+        currentScrollTop.text(scrollTop)
+      }
+      
+      window.requestAnimationFrame(render)
+    }
+    window.requestAnimationFrame(render)    
+    window.onresize = setDimensions
+
+    ////
+    function processData(data, tt){
+        console.log(data);
+        console.log(tt);
+
+        /* --------- CUBES ---------*/       
+
+        var cubes = cubesGroup.selectAll('g.cube').data(data, function(d){ return d.id });
+        
+        var ce = cubes
+            .enter()
+            .append('g')
+            .attr('class', 'cube')
+            .attr('fill', function(d){ return color(d.id); })
+            .attr('stroke', function(d){ return d3.color(color(d.id)).darker(2); });    
+            // .merge(cubes)
+            // .sort(cubes3D.sort);       
+
+        cubes.exit().remove();
+        /* --------- FACES ---------*/
+
+        var faces = cubes.merge(ce).selectAll('path.face').data(function(d){ return d.faces; }, function(d){ return d.face; });
+        faces.enter()
+            .append('path')
+            .attr('class', 'face')
+            .attr('fill-opacity', 0.7)
+            .classed('_3d', true)
+            .merge(faces)
+            .transition().duration(tt)
+            .attr('d', cubes3D.draw);
+
+        faces.exit().remove();
+        /* --------- TEXT ---------*/
+        var texts = cubes.merge(ce).selectAll('text').data(function(d){
+            var _t = d.faces.filter(function(d){
+                return d.face === 'top';
+            });
+            return [{height: d.height, centroid: _t[0].centroid, text:d.text}];
+        });
+
+        texts
+            .enter()
+            .append('text')
+            .attr('class', 'text')
+            .attr('id', function(d){ return d.id})
+            .attr('dy', '-.7em')
+            .attr('text-anchor', 'middle')
+            .attr('font-family', 'sans-serif')
+            .attr('font-weight', 'bolder')
+            .attr('x', function(d){ return origin[0] + scale * d.centroid.x })
+            .attr('y', function(d){ return origin[1] + scale * d.centroid.y })
+            .classed('_3d', true)
+            .merge(texts)
+            .transition().duration(tt)
+            // .attr('fill', 'blanchedalmond')
+            .attr('fill', 'black')
+            .attr('stroke', 'none')
+            .attr('x', function(d){ return origin[0] + scale * d.centroid.x })
+            .attr('y', function(d){ return origin[1] + scale * d.centroid.y })
+            .tween('text', function(d){
+                var that = d3.select(this);
+                var i = d3.interpolateString(+that.text(), d.text); 
+                return function(t){that.text(i(t));};
+            });
+        texts.exit().remove();
+
+        ce.selectAll('._3d').sort(d3._3d().sort);
+        
+    }
+
+    
+    //----- init --------------------------------------------------
+    function init(index,buttonType){
+        cubesData = [];
+        interal = [];
+        var cnt = 0;
+        var dis = 0; 
+        var _cube;
+        var index_change = 0.8;
+
+        if(buttonType=='btnChange'){          
+          change_type = change_type ? false : true;
+          console.log(change_type);
+          if(change_type==true){
+            array_text = array_text_simple;
+            array_r = array_r_simple;
+            array_z = array_z_simple;
+            // index_change = 5;
+          }else{
+            array_text = array_text_origin;
+            array_r = array_r_origin;
+            array_z = array_z_origin;
+            // index_change = 1.2;
+          }
+        }
+
+        for(var i=0; i<array_r.length; i++){            
+            dis = dis + array_z[i] + index + index_change;
+            interal.push(dis);
+            
+            _cube = makeCube(0,0,dis,array_r[i],array_z[i]);
+            _cube.id = 'cube_' + cnt++;
+            // _cube.height = array_text[i];
+            _cube.text = array_text[i];
+            cubesData.push(_cube);
+        }
+        // if(change_type==false){
+        //   ext_cube = makeCube(0,-6,dis/1.3,array_r[5],array_z[5]);
+        //   ext_cube.text = 'reorg';
+        //   cubesData.push(ext_cube);
+        // }
+
+        processData(cubes3D(cubesData), 10);
+
+        if(buttonType=='btnReset' || buttonType=='btnChange'){       
+          document.getElementById('recwidth').value = 50;   
+          processData(cubes3D.rotateX(-.2*startAngle).rotateY(3.0*startAngle)(cubesData), 0);
+        }
+            
+    }
+
+    //---- draggable setting -------------------------------------------
+    function dragStart(){
+        mx = d3.event.x;
+        my = d3.event.y;
+    }
+    function dragged(){
+        mouseX = mouseX || 0;
+        mouseY = mouseY || 0;
+        beta   = (d3.event.x - mx + mouseX) * Math.PI / 230 ;
+        alpha  = (d3.event.y - my + mouseY) * Math.PI / 230  * (-1);
+        processData(cubes3D.rotateY(beta + startAngle).rotateX(alpha - startAngle)(cubesData), 0, null);
+    }
+    function dragEnd(){
+        mouseX = d3.event.x - mx + mouseX;
+        mouseY = d3.event.y - my + mouseY;
+    }
+    //----------------------------------------------------------------------
+
+    //---- function for making Cube   --------------------------------------
+    function makeCube(x, y, z, h, d){
+        return [
+            {x: x - h/2, y: y + h/2, z: z }, // FRONT TOP LEFT
+            {x: x - h/2, y: y - h/2, z: z }, // FRONT BOTTOM LEFT
+            {x: x + h/2, y: y - h/2, z: z }, // FRONT BOTTOM RIGHT
+            {x: x + h/2, y: y + h/2, z: z }, // FRONT TOP RIGHT
+
+            {x: x - h/2, y: y + h/2, z: z - d}, // BACK  TOP LEFT
+            {x: x - h/2, y: y - h/2, z: z - d}, // BACK  BOTTOM LEFT
+            {x: x + h/2, y: y - h/2, z: z - d}, // BACK  BOTTOM RIGHT
+            {x: x + h/2, y: y + h/2, z: z - d}, // BACK  TOP RIGHT
+        ];
+    }
+    d3.select('#reset').on('click', function() {
+        init(0, 'btnReset');
+    });
+    d3.select('#change').on('click', function() {
+        init(0, 'btnChange');
+    });
+    init(0,'btnReset');
+</script>
+
+
+</body>
