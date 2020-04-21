@@ -179,6 +179,8 @@ var RevealAudioSlideshow = window.RevealAudioSlideshow || (function(){
 
 		var divElement =  document.createElement( 'div' );
 		divElement.className = "audio-controls";
+		// divElement.title = "點擊播放語音";
+		divElement.setAttribute( 'title', "點擊播放語音" );
 		divElement.setAttribute( 'style', playerStyle );
 		document.querySelector( ".reveal" ).appendChild( divElement );
 
