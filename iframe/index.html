@@ -163,8 +163,8 @@
         <a style="color: blue;"><strong>在下圖中移動滑鼠</strong></a> 
         <button id='reset' style="color: black;">Reset</button>
         <button id='change' style="color: black;">Change</button><br>
-        寬度 <input type = "range" min = "10" max = "40"  value = "10" id = "recwidth" ><br>
-        <svg id="darknet_19" width="1200px" height="400px"></svg>
+        寬度 <input type = "range" min = "10" max = "90"  value = "50" id = "recwidth" ><br>
+        <svg id="darknet_19" width="100%" height="500px"></svg>
           
       </div>    
       
@@ -322,10 +322,10 @@
     var padding = 5   
 
     d3.select("#recwidth").on("input", function() {
-      if(this.value>=25){
-        init((this.value-15)/15,null);
+      if(this.value>=50){
+        init((this.value-40)/40,null);
       }else{
-        init(-(15-this.value)/15,null);
+        init(-(40-this.value)/40,null);
       }
     });
     
@@ -748,8 +748,8 @@
         processData(cubes3D(cubesData), 10);
 
         if(buttonType=='btnReset' || buttonType=='btnChange'){       
-          document.getElementById('recwidth').value = 10;   
-          processData(cubes3D.rotateX(-.2*startAngle).rotateY(2.3*startAngle)(cubesData), 0);
+          document.getElementById('recwidth').value = 50;   
+          processData(cubes3D.rotateX(-.2*startAngle).rotateY(3.0*startAngle)(cubesData), 0);
         }
             
     }
