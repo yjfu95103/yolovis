@@ -2,7 +2,7 @@ window.onload = function () {
 
     // var WIDTH = 1800;
     // var HEIGHT = 1200;
-    var WIDTH = '8500px';
+    var WIDTH = '7200px';
     var HEIGHT = '600px';
     var timer = 0;
      // ---- rotate dog image-----------------------------------------------
@@ -199,7 +199,7 @@ window.onload = function () {
       }else if(Type=='route'){
         // console.log('layer:',layer);
       }
-      console.log(startX, startY, endX, tensorNum, filterSize);
+      // console.log(startX, startY, endX, tensorNum, filterSize);
       makeCube(startX, startY, endX, tensorNum, filterSize, color); 
       return endX; 
     }
@@ -265,9 +265,6 @@ window.onload = function () {
           var data = this.id.split(".",1)
           var layer = this.id.split(".",1)
           var num = this.id.split(".",2)
-          if(data){
-            console.log()
-          }
           $("#imgscale").css("display","block").css("position","absolute").css("top",(event.offsetY+10) + "px").css("left",(event.offsetX-10) + "px").css("width","300px");
           $("#imgscale").append("<img src='" + 'data/img/'+this.id+'.jpg' + "'style='width:200px'>");
           $("#imgscale").append("<p>"+this.id+'.jpg'+"</p>");
@@ -431,20 +428,20 @@ window.onload = function () {
     //       .style("opacity", 0.2)
     //       .remove();
 
-    d3.select(this).on("click", function() {
-      console.log("click")
-      d3.select(this)
-        .transition() // First fade to green.
-          .delay(1000)
-          .style("opacity", 0.8)
-          // .remove();
+    // d3.select(this).on("click", function() {
+    //   console.log("click")
+    //   d3.select(this)
+    //     .transition() // First fade to green.
+    //       .delay(1000)
+    //       .style("opacity", 0.8)
+    //       // .remove();
 
-      d3.select(this)
-      .transition() // First fade to green.
-        .delay(1000)
-        .style("opacity", 0.8)
-        // .remove();
-    })
+    //   d3.select(this)
+    //   .transition() // First fade to green.
+    //     .delay(1000)
+    //     .style("opacity", 0.8)
+    //     // .remove();
+    // })
 
     
 

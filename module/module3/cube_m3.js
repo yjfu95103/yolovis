@@ -1,11 +1,11 @@
 // window.addEventListener("load", function() {
 window.onload = function f() {
     var origin = [700, 230], scale = 20, cubesData = [], linesData = [], front=[], end=[], alpha = 0, beta = 0, startAngle = Math.PI/6;
-    var svg    = d3.select('#svgCube').call(d3.drag()
-                            .on('drag', dragged)
-                            .on('start', dragStart)
-                            .on('end', dragEnd));
-    // var svg    = d3.select('#svgCube').append('g');                        
+    // var svg    = d3.select('#svgCube').call(d3.drag()
+    //                         .on('drag', dragged)
+    //                         .on('start', dragStart)
+    //                         .on('end', dragEnd));
+    var svg    = d3.select('#svgCube').append('g');                        
     // var color  = d3.scaleOrdinal(d3.schemeCategory20);
     // var cubesGroup = svg.append('g').attr('class', 'cubes');
     var mx, my, mouseX, mouseY;
