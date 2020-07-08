@@ -560,7 +560,7 @@ window.onload = function f() {
         .attr('stroke-width', '1')
         .attr('x', 25)
         .attr('y', 590)
-        .attr('width', 1400)
+        .attr('width', 1250)
         .attr('height', 400);
 
     // var box_control = svg.append('rect')
@@ -577,7 +577,7 @@ window.onload = function f() {
         .append('button')
         .attr('id', 'clear')
         .text("reset")
-        .attr("style", "position:absolute; left:1010px; top:310px; width:100px; height:100px; ")
+        .attr("style", "position:absolute; left:810px; top:310px; width:100px; height:100px; ")
     // var button = d3.select('body')
     //     .append('button')
     //     .attr('id', 'anchortable')
